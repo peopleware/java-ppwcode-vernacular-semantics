@@ -148,6 +148,7 @@ public class CompoundPropertyExceptionTest {
                 if (closed) {
                   subject.close();
                 }
+                System.out.println(subject.getSize());
                 result.add(subject);
               }
             }
