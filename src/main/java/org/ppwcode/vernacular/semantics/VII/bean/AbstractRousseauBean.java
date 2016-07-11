@@ -1,5 +1,5 @@
 /*<license>
-Copyright 2004 - $Date$ by PeopleWare n.v.
+Copyright 2004 - 2016 by PeopleWare n.v.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -45,10 +45,10 @@ import org.toryt.annotations_I.Scope;
  *
  * @mudo unit test
  */
-@Copyright("2004 - $Date$, PeopleWare n.v.")
+@Copyright("2004 - 2016, PeopleWare n.v.")
 @License(APACHE_V2)
 @SvnInfo(revision = "$Revision$",
-         date     = "$Date$")
+         date     = "2016")
 public abstract class AbstractRousseauBean extends AbstractSemanticBean implements RousseauBean {
 
   private static final Log LOG = LogFactory.getLog(AbstractRousseauBean.class);
