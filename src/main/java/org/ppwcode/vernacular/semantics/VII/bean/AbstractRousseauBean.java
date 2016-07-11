@@ -17,21 +17,13 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.bean;
 
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
+import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
 
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
-import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
-import org.toryt.annotations_I.Scope;
 
 
 /**
@@ -45,10 +37,6 @@ import org.toryt.annotations_I.Scope;
  *
  * @mudo unit test
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
 public abstract class AbstractRousseauBean extends AbstractSemanticBean implements RousseauBean {
 
   private static final Log LOG = LogFactory.getLog(AbstractRousseauBean.class);
@@ -81,12 +69,14 @@ public abstract class AbstractRousseauBean extends AbstractSemanticBean implemen
    * }
    * </pre>
    */
+  /*
   @MethodContract(
     post = {
       @Expression(scope = Scope.PROTECTED, value = "result.propertyName == null"),
       @Expression(scope = Scope.PROTECTED, value = "result.elementExceptions.empty")
     }
   )
+  */
   public CompoundPropertyException wildExceptions() {
     return new CompoundPropertyException(this, null, null, null);
   }

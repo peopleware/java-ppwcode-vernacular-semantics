@@ -17,24 +17,12 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.bean;
 
 
-import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppwcode.util.reflect_I.PropertyHelpers.propertyValue;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
-
 import java.beans.PropertyDescriptor;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
-import org.toryt.annotations_I.Throw;
+import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
+import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
+import static org.ppwcode.util.reflect_I.PropertyHelpers.propertyValue;
 
 
 /**
@@ -43,10 +31,6 @@ import org.toryt.annotations_I.Throw;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
 public abstract class AbstractSemanticBean implements SemanticBean {
 
   @Override
@@ -63,10 +47,12 @@ public abstract class AbstractSemanticBean implements SemanticBean {
    * Because this method is final, it is impossible to make a subtype
    * Cloneable succesfully.
    */
+  /*
   @MethodContract(
     post = @Expression("false"),
     exc  = @Throw(type = CloneNotSupportedException.class, cond = @Expression("true"))
   )
+  */
   @Override
   protected final Object clone() throws CloneNotSupportedException {
     throw new CloneNotSupportedException("semantic objects may never be cloned");
@@ -137,7 +123,7 @@ public abstract class AbstractSemanticBean implements SemanticBean {
    * or {@link Map}, or an array, and that is not the {@link #getClass()} method.
    * The order is indeterminate.
    *
-   * @mudo contract
+   * // MUDO contract
    */
   protected Set<String> propertyNamesForToString() {
     PropertyDescriptor[] pds = getPropertyDescriptors(this);
@@ -157,9 +143,11 @@ public abstract class AbstractSemanticBean implements SemanticBean {
   /**
    * Convenience method for generating the toString of to-many associations.
    *
-   * @mudo move somewhere else
+   * // MUDO move somewhere else
    */
+  /*
   @MethodContract(pre = @Expression("c != null"), post = @Expression("true"))
+  */
   protected final static String collectionString(final Collection<?> c) {
     assert c != null;
     StringBuilder result = new StringBuilder("{");

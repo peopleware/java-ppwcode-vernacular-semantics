@@ -17,23 +17,17 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.bean;
 
 
-import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
-import static org.ppwcode.util.reflect_I.PropertyHelpers.propertyValue;
+import org.ppwcode.vernacular.exception_III.CompoundSemanticException;
+import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
 
 import java.beans.PropertyDescriptor;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppwcode.vernacular.exception_III.CompoundSemanticException;
-import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
+import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
+import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
+import static org.ppwcode.util.reflect_I.PropertyHelpers.propertyValue;
 
 
 /**
@@ -42,10 +36,6 @@ import org.toryt.annotations_I.MethodContract;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
 public final class RousseauBeanHelpers {
 
   private RousseauBeanHelpers() {
@@ -58,8 +48,9 @@ public final class RousseauBeanHelpers {
    * in most cases (this is all that is implemented at this time) the beans
    * reachable via a to-one association.
    *
-   * @mudo method is probably never used; remove before release
+   * //MUDO method is probably never used; remove before release
    */
+  /*
   @MethodContract(
     pre  = @Expression("_rb != null"),
     post = {
@@ -75,6 +66,7 @@ public final class RousseauBeanHelpers {
                   "}")
     }
   )
+  */
   public static Set<RousseauBean> directUpstreamRousseauBeans(RousseauBean rb) {
     assert preArgumentNotNull(rb, "rb");
     Set<RousseauBean> result = new HashSet<RousseauBean>();
@@ -98,8 +90,9 @@ public final class RousseauBeanHelpers {
    * reachable via a to-one association. This is applied recursively.
    * {@code rb} itself is also part of the set.
    *
-   * @mudo method is probably never used; remove before release
+   * // MUDO method is probably never used; remove before release
    */
+  /*
   @MethodContract(
     pre  = @Expression("_rb != null"),
     post = {
@@ -108,6 +101,7 @@ public final class RousseauBeanHelpers {
                    "union (RousseauBean rbr : directUpstreamRousseauBeans(_rb)) {upstreamRousseauBeans(rbr)}")
     }
   )
+  */
   public static Set<RousseauBean> upstreamRousseauBeans(RousseauBean rb) {
     assert preArgumentNotNull(rb, "rb");
     LinkedList<RousseauBean> agenda = new LinkedList<RousseauBean>();
@@ -130,8 +124,9 @@ public final class RousseauBeanHelpers {
    * from {@code rb} over to-one associations (upstream). At the same time, check the civility
    * and gather all {@link PropertyException PropertyExceptions} that might occur.
    *
-   * @mudo method is probably never used; remove before release
+   * // MUDO method is probably never used; remove before release
    */
+  /*
   @MethodContract(
     pre  = @Expression("_rb != null"),
     post = {
@@ -140,6 +135,7 @@ public final class RousseauBeanHelpers {
       @Expression("result.allElementExceptions == union (RousseauBean rbr : upstreamRousseauBeans(_rb)) {rbr.wildExceptions().allElementExceptions}")
     }
   )
+  */
   public static CompoundSemanticException normalizeAndCheckCivilityOnUpstreamRousseauBeans(RousseauBean rb) {
     assert preArgumentNotNull(rb, "rb");
     LinkedList<RousseauBean> agenda = new LinkedList<RousseauBean>();
@@ -166,12 +162,14 @@ public final class RousseauBeanHelpers {
   /**
    * Normalize all {@link RousseauBean RousseauBean} in {@code rbs}.
    */
+  /*
   @MethodContract(
     pre  = @Expression("_rbs != null"),
     post = {
       @Expression("for (RousseauBean rb : _rbs) {rb.normalize()}")
     }
   )
+  */
   public static void normalize(Set<? extends RousseauBean> rbs) {
     assert preArgumentNotNull(rbs, "rbs");
     for (RousseauBean rb : rbs) {
@@ -183,6 +181,7 @@ public final class RousseauBeanHelpers {
    * Gather all {@link RousseauBean#wildExceptions() wild exceptions} from all {@link RousseauBean RousseauBeans}
    * in {@code rbs}.
    */
+  /*
   @MethodContract(
     pre  = @Expression("_rbs != null"),
     post = {
@@ -190,6 +189,7 @@ public final class RousseauBeanHelpers {
       @Expression("result.allElementExceptions == union (RousseauBean rb : _rbs) {rb.wildExceptions().allElementExceptions}")
     }
   )
+  */
   public static CompoundSemanticException wildExceptions(Set<? extends RousseauBean> rbs) {
     assert preArgumentNotNull(rbs, "rbs");
     CompoundSemanticException cpe = new CompoundSemanticException("UPSTREAM_EXCEPTIONS", null);

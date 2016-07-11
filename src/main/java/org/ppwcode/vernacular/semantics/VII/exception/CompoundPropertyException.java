@@ -17,25 +17,10 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.exception;
 
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
 import org.ppwcode.vernacular.exception_III.ApplicationException;
 import org.ppwcode.vernacular.exception_III.CompoundException;
-import org.toryt.annotations_I.Basic;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.Invars;
-import org.toryt.annotations_I.MethodContract;
-import org.toryt.annotations_I.Throw;
+
+import java.util.*;
 
 
 /**
@@ -45,14 +30,12 @@ import org.toryt.annotations_I.Throw;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
+/*
 @Invars({
   @Expression("elementsException.size > 1 ? propertyName == null"),
   @Expression("for (PropertyException pExc : allElementExceptions) {! pExc instanceof CompoundPropertyException)")
 })
+*/
 public final class CompoundPropertyException extends PropertyException implements CompoundException<PropertyException> {
 
   /**
@@ -100,6 +83,7 @@ public final class CompoundPropertyException extends PropertyException implement
    *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    */
+  /*/
   @MethodContract(
     pre  = {
       @Expression("_origin != null"),
@@ -114,6 +98,7 @@ public final class CompoundPropertyException extends PropertyException implement
       @Expression("cause == _cause")
     }
   )
+  */
   public CompoundPropertyException(final Object origin, final String propertyName, final String message, final Throwable cause) {
     super(origin, propertyName, message, cause);
   }
@@ -173,6 +158,7 @@ public final class CompoundPropertyException extends PropertyException implement
    *
    * @since IV
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_originType != null"),
@@ -187,6 +173,7 @@ public final class CompoundPropertyException extends PropertyException implement
       @Expression("cause == _cause")
     }
   )
+  */
   public CompoundPropertyException(final Class<?> originType, final String propertyName, final String message, final Throwable cause) {
     super(originType, propertyName, message, cause);
   }
@@ -203,11 +190,14 @@ public final class CompoundPropertyException extends PropertyException implement
    * thrown. Element exceptions can only be added to the compound when
    * it is not yet closed.
    */
+  /*
   @Basic(init = @Expression("false"))
+  */
   public boolean isClosed() {
     return $closed;
   }
 
+  /*
   @MethodContract(
     post = @Expression("closed"),
     exc = @Throw(
@@ -215,6 +205,7 @@ public final class CompoundPropertyException extends PropertyException implement
       cond = @Expression("'closed")
     )
   )
+  */
   public void close() throws IllegalStateException {
     if ($closed) {
       throw new IllegalStateException("can't close twice");
@@ -248,6 +239,7 @@ public final class CompoundPropertyException extends PropertyException implement
    * to a single exception. If there are multiple entries in the map,
    * the property name of this exception must be <code>null</code>.
    */
+  /*
   @Basic(
     invars = {
       @Expression("elementExceptionsMap != null"),
@@ -264,6 +256,7 @@ public final class CompoundPropertyException extends PropertyException implement
     },
     init = @Expression("elementExceptionsMap.empty")
   )
+  */
   public final Map<String, Set<PropertyException>> getElementExceptionsMap() {
     if ($closed) {
       return $elementExceptionsMap; // is made unmodifiable by now
@@ -286,13 +279,17 @@ public final class CompoundPropertyException extends PropertyException implement
     return pes == null ? null : Collections.unmodifiableSet(new HashSet<PropertyException>(pes));
   }
 
+  /*
   @MethodContract(post = @Expression("result.equals(elementExceptions[null])"))
+  */
   public Set<PropertyException> getGeneralElementExceptions() {
     Set<PropertyException> result = $elementExceptionsMap.get(null);
     return $closed ? result : immutablePESetCopy(result);
   }
 
+  /*
   @MethodContract(post = @Expression("union (Set s : elementExceptionsMap.values()"))
+  */
   public Set<PropertyException> getElementExceptions() {
     Set<PropertyException> result = new HashSet<PropertyException>();
     for (Set<PropertyException> pes : $elementExceptionsMap.values()) {
@@ -306,7 +303,9 @@ public final class CompoundPropertyException extends PropertyException implement
    * intresting if <code>size == 1</code>, of course.
    * Returns <code>null</code> if <code>size == 0</code>.
    */
+  /*
   @MethodContract(post = @Expression("result != null ? contains(result"))
+  */
   public PropertyException getAnElement() {
     if (isEmpty()) {
       return null;
@@ -323,10 +322,12 @@ public final class CompoundPropertyException extends PropertyException implement
    * Checks whether this exact property exception is in the compound
    * with reference semantics.
    */
+  /*
   @MethodContract(
     post = @Expression("_pe != null && elementExceptions[pe.propertyName] != null && " +
                    "exists(PropertyException pe : elementExceptions[pe.propertyName]) {pe.like(_pe)}")
   )
+  */
   public final boolean contains(PropertyException pe) {
     if (pe == null) {
       return false;
@@ -346,7 +347,9 @@ public final class CompoundPropertyException extends PropertyException implement
   /**
    * There are no element exceptions.
    */
+  /*
   @MethodContract(post = @Expression("elementExceptionsMap.empty"))
+  */
   public final boolean isEmpty() {
     return $elementExceptionsMap.isEmpty();
   }
@@ -354,9 +357,11 @@ public final class CompoundPropertyException extends PropertyException implement
   /**
    * The total number of exceptions in this compound.
    */
+  /*
   @MethodContract(
     post = @Expression("sum(Set s : elementExceptionsMap) {s.size})")
   )
+  */
   public int getSize() {
     int acc = 0;
     for (Set<PropertyException> s : $elementExceptionsMap.values()) {
@@ -369,6 +374,7 @@ public final class CompoundPropertyException extends PropertyException implement
    * @param     pExc
    *            The exception to add as element to the compound.
    */
+  /*
   @MethodContract(
     post = {
       @Expression("elementExceptionsMap.containsKey(_pExc.propertyName)"),
@@ -386,6 +392,7 @@ public final class CompoundPropertyException extends PropertyException implement
       @Throw(type = IllegalArgumentException.class, cond = @Expression("originType != null ? _pExc.originType != originType"))
     }
   )
+  */
   public void addElementException(final PropertyException pExc)
       throws IllegalStateException, IllegalArgumentException {
     if (isClosed()) {
@@ -414,6 +421,7 @@ public final class CompoundPropertyException extends PropertyException implement
     propertySet.add(pExc);
   }
 
+  /*
   @Invars({
     @Expression("$elementExceptionsMap != null"),
     @Expression("! $elementExceptionsMap.containsKey(EMPTY)"),
@@ -426,6 +434,7 @@ public final class CompoundPropertyException extends PropertyException implement
     @Expression("for (Set e : $elementExceptionsMap.values) {for (PropertyException pe : s) {pe.originType == originType}}"),
     @Expression("propertyName != null ? for (String s) {s != propertyName ? ! $elementExceptionsMap.containsKey(s)}")
   })
+  */
   private Map<String, Set<PropertyException>> $elementExceptionsMap = new HashMap<String, Set<PropertyException>>();
 
   /*</property>*/
@@ -436,11 +445,13 @@ public final class CompoundPropertyException extends PropertyException implement
   //------------------------------------------------------------------
 
   @Override
+  /*
   @MethodContract(
     post = @Expression("result ? " +
                          "for (PropertyException otherPe : _other.elementExceptions) {contains(otherPe)} && " +
                          "for (PropertyException Pe : elementExceptions) {_other.contains(Pe)}")
   )
+  */
   public boolean like(ApplicationException other) {
     if (! super.like(other)) {
       return false;
@@ -469,6 +480,7 @@ public final class CompoundPropertyException extends PropertyException implement
    * exceptions is larger than 1, this is thrown. If there is exactly
    * 1 element exception, that is thrown instead.
    */
+  /*
   @MethodContract(
     post = {
       @Expression(
@@ -497,6 +509,7 @@ public final class CompoundPropertyException extends PropertyException implement
        )
     }
   )
+  */
   public final void throwIfNotEmpty() throws PropertyException {
     if (! isClosed()) {
       close();

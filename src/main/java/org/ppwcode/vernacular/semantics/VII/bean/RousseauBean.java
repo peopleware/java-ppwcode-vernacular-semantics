@@ -16,15 +16,7 @@ limitations under the License.
 
 package org.ppwcode.vernacular.semantics.VII.bean;
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
 import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
-import org.toryt.annotations_I.Throw;
 
 
 
@@ -75,10 +67,6 @@ import org.toryt.annotations_I.Throw;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
 public interface RousseauBean extends SemanticBean {
 
   /**
@@ -93,6 +81,7 @@ public interface RousseauBean extends SemanticBean {
    *   protected to make it more easy to describe to users what the business
    *   rules for this type are.</p>
    */
+  /*
   @MethodContract(
     post = {
       @Expression("result != null"),
@@ -103,15 +92,19 @@ public interface RousseauBean extends SemanticBean {
       @Expression("result.cause == null")
     }
   )
+  */
   CompoundPropertyException wildExceptions();
 
+  /*
   @MethodContract(post = @Expression("wildExceptions.empty"))
+  */
   boolean civilized();
 
   /**
    * This method does nothing, but will throw the wild exceptions
    * if this bean is not civilized.
    */
+  /*
   @MethodContract(
     post = @Expression(value = "'civilized",
                        description = "if this bean is not civilized before the call, " +
@@ -124,6 +117,7 @@ public interface RousseauBean extends SemanticBean {
                    @Expression("throw.closed")
                  })
   )
+  */
   void checkCivility() throws CompoundPropertyException;
 
   /**
@@ -136,7 +130,9 @@ public interface RousseauBean extends SemanticBean {
    * <p>This method can be called at any time, so it should never
    *   make unexpected changes to the state.</p>
    */
+  /*
   @MethodContract(post = @Expression("true"))
+  */
   void normalize();
 
 }

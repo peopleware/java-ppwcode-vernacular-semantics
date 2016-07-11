@@ -46,10 +46,6 @@ import org.toryt.annotations_I.MethodContract;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
 public class SetterPropertyException extends ValuePropertyException {
 
   /*<construction>*/
@@ -70,6 +66,7 @@ public class SetterPropertyException extends ValuePropertyException {
    *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_origin != null"),
@@ -88,6 +85,7 @@ public class SetterPropertyException extends ValuePropertyException {
       @Expression("cause == _cause")
     }
   )
+  */
   public SetterPropertyException(final Object origin,
                                  final String propertyName,
                                  final Object vetoedValue,
@@ -202,7 +200,9 @@ public class SetterPropertyException extends ValuePropertyException {
    * The value that was tried to set on property {@link #getPropertyName()},
    * which was vetoed by this exception.
    */
+  /*
   @Basic
+  */
   public final Object getVetoedValue() {
     return safeReference($vetoedValue);
   }
@@ -224,9 +224,11 @@ public class SetterPropertyException extends ValuePropertyException {
    * @since VI
    */
   @Override
+  /*
   @MethodContract(
     post = @Expression("result ? other.vetoedValue == vetoedValue")
   )
+  */
   public boolean like(ApplicationException other) {
     return super.like(other) && eqn(((SetterPropertyException)other).getVetoedValue(), getVetoedValue());
   }

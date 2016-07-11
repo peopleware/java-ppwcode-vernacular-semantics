@@ -16,15 +16,6 @@ limitations under the License.
 
 package org.ppwcode.vernacular.semantics.VII.bean;
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
-
-
 /**
  * <p>A type that formalizes how to work with JavaBeans that represent
  *   real-world objects (objects with semantic meaning, non-utility objects,
@@ -73,10 +64,6 @@ import org.toryt.annotations_I.MethodContract;
  *
  * @since VI
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
 public interface SemanticBean {
 
   /**
@@ -84,7 +71,9 @@ public interface SemanticBean {
    *
    * @see Object
    */
+  /*
   @MethodContract(post = {@Expression("this == other")})
+  */
   boolean equals(final Object other);
 
   /**
@@ -94,6 +83,7 @@ public interface SemanticBean {
    */
   int hashCode();
 
+  /*
   @MethodContract(
     post = {
       @Expression("result != null"),
@@ -101,6 +91,7 @@ public interface SemanticBean {
       @Expression("result.endsWith(']')")
     }
   )
+  */
   String toString();
 
 }

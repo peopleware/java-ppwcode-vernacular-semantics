@@ -84,10 +84,6 @@ import org.toryt.annotations_I.MethodContract;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
 public class PropertyException extends SemanticException {
 
   /*<construction>*/
@@ -132,6 +128,7 @@ public class PropertyException extends SemanticException {
    *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_origin != null"),
@@ -146,6 +143,7 @@ public class PropertyException extends SemanticException {
       @Expression("cause == _cause")
     }
   )
+  */
   public PropertyException(Object origin, String propertyName, String message, Throwable cause) {
     super(message, cause);
     assert origin != null;
@@ -221,6 +219,7 @@ public class PropertyException extends SemanticException {
    *
    * @since IV
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_originType != null"),
@@ -235,6 +234,7 @@ public class PropertyException extends SemanticException {
       @Expression("cause == _cause")
     }
   )
+  */
   public PropertyException(Class<?> originType, final String propertyName, String message, Throwable cause) {
     super(message, cause);
     assert originType != null;
@@ -254,7 +254,9 @@ public class PropertyException extends SemanticException {
   /**
    * The type of the bean that has thrown this exception.
    */
+  /*
   @Basic(invars = @Expression("originType != null"))
+  */
   public final Class<?> getOriginType() {
     return $originType;
   }
@@ -271,11 +273,13 @@ public class PropertyException extends SemanticException {
   /**
    * The bean that has thrown this exception.
    */
+  /*
   @Basic(
     invars = {
       @Expression("origin != null ? originType == origin.class")
     }
   )
+  */
   public final Object getOrigin() {
     return $origin;
   }
@@ -292,7 +296,9 @@ public class PropertyException extends SemanticException {
   /**
    * The name of the property for which this
    */
+  /*
   @Basic(invars = @Expression("propertyName != null ? hasProperty(originType, propertyName)"))
+  */
   public final String getPropertyName() {
     return $propertyName;
   }
@@ -307,10 +313,12 @@ public class PropertyException extends SemanticException {
   //------------------------------------------------------------------
 
   @Override
+  /*
   @MethodContract(
     post = @Expression("result ? (origin == _other.origin) && " +
                                 "(originType == _other.originType) && (propertyName == _other.propertyName)")
   )
+  */
   public boolean like(ApplicationException other) {
     return super.like(other) &&
            (((PropertyException)other).getOrigin() == getOrigin()) &&

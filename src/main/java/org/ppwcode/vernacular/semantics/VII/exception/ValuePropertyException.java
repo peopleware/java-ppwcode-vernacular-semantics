@@ -17,20 +17,12 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.exception;
 
 
-import static org.ppwcode.metainfo_I.License.Type.APACHE_V2;
-import static org.ppwcode.util.reflect_I.CloneHelpers.safeReference;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.ppwcode.vernacular.exception_III.ApplicationException;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.ppwcode.metainfo_I.Copyright;
-import org.ppwcode.metainfo_I.License;
-import org.ppwcode.metainfo_I.vcs.SvnInfo;
-import org.ppwcode.vernacular.exception_III.ApplicationException;
-import org.toryt.annotations_I.Basic;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.Invars;
-import org.toryt.annotations_I.MethodContract;
+import static org.ppwcode.util.reflect_I.CloneHelpers.safeReference;
 
 
 /**
@@ -53,14 +45,12 @@ import org.toryt.annotations_I.MethodContract;
  *
  * @since VI
  */
-@Copyright("2004 - 2016, PeopleWare n.v.")
-@License(APACHE_V2)
-@SvnInfo(revision = "$Revision$",
-         date     = "2016")
+/*
 @Invars({
   @Expression("propertyName != null"),
   @Expression("originType != null")
 })
+*/
 public class ValuePropertyException extends PropertyException {
 
   /*<construction>*/
@@ -78,6 +68,7 @@ public class ValuePropertyException extends PropertyException {
    *            The exception that occurred, causing this exception to be
    *            thrown, if that is the case.
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_origin != null"),
@@ -95,6 +86,7 @@ public class ValuePropertyException extends PropertyException {
       @Expression("cause == _cause")
     }
   )
+  */
   public ValuePropertyException(Object origin, String propertyName, String message, Throwable cause) {
     super(origin, propertyName, message, cause);
     assert propertyName != null;
@@ -212,7 +204,9 @@ public class ValuePropertyException extends PropertyException {
    * The value of property {@link #getPropertyName()} of {@link #getOrigin()}
    * at the time this exception occurred. {@code null} is not applicable.
    */
+  /*
   @Basic(invars = @Expression("origin == null ? propertyValue = null"))
+  */
   public final Object getPropertyValue() {
     return safeReference($propertyValue);
   }
@@ -234,9 +228,11 @@ public class ValuePropertyException extends PropertyException {
    * @since VI
    */
   @Override
+  /*
   @MethodContract(
     post = @Expression("result ? other.propertyValue == propertyValue")
   )
+  */
   public boolean like(ApplicationException other) {
     return super.like(other) && eqn(((ValuePropertyException)other).getPropertyValue(), getPropertyValue());
   }
