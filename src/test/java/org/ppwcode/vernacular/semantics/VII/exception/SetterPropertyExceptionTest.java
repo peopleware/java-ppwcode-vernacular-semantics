@@ -17,23 +17,23 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.exception;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.ppwcode.util.reflect_I.PropertyHelpers.hasProperty;
-import static org.ppwcode.vernacular.exception_III.ApplicationException.DEFAULT_MESSAGE_KEY;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static org.junit.Assert.*;
+import static org.ppwcode.vernacular.exception.IV.ApplicationException.DEFAULT_MESSAGE_KEY;
+import static org.ppwcode.vernacular.semantics.VII.util.PropertyHelpers.hasProperty;
+
+
+@SuppressWarnings({"WeakerAccess", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection", "Duplicates"})
 public class SetterPropertyExceptionTest {
 
   public final static String EMPTY = "";
@@ -55,59 +55,59 @@ public class SetterPropertyExceptionTest {
   @Before
   public void setUp() throws Exception {
 //    originMock = new OriginStub();
-    messages = new HashSet<String>();
+    messages = new HashSet<>();
     messages.add(null);
     messages.add("stub message");
-    propertyNames = new HashSet<String>();
-    // null not allowed as propertyname
+    propertyNames = new HashSet<>();
+    // null not allowed as property name
     propertyNames.add("stubProperty");
-    propertyValues = new HashSet<Object>();
+    propertyValues = new HashSet<>();
     propertyValues.add(null);
     propertyValues.add(new Object());
-    propertyValues.add(new String());
+    propertyValues.add("");
     propertyValues.add(new Date());
-    vetoedValues = new HashSet<Object>();
+    vetoedValues = new HashSet<>();
     vetoedValues.add(null);
     vetoedValues.add(new Object());
-    vetoedValues.add(new String());
+    vetoedValues.add("");
     vetoedValues.add(new Date());
-    throwables = new HashSet<Throwable>();
+    throwables = new HashSet<>();
     throwables.add(null);
     throwables.add(new Throwable());
-    origins = new HashSet<PropertyExceptionTest.OriginStub>();
+    origins = new HashSet<>();
     for (Object propertyValue : propertyValues) {
       PropertyExceptionTest.OriginStub origin = new PropertyExceptionTest.OriginStub();
       origin.setStubProperty(propertyValue);
       origins.add(origin);
     }
     subjects = createSubjects();
-    origins2 = new HashSet<Object>(origins);
+    origins2 = new HashSet<>(origins);
     origins2.add(null);
     origins2.add(new Object());
-    originTypes2 = new HashSet<Class<?>>();
+    originTypes2 = new HashSet<>();
     originTypes2.add(PropertyExceptionTest.OriginStub.class);
     originTypes2.add(null);
     originTypes2.add(Object.class);
     originTypes2.add(PropertyException.class);
-    propertyNames2 = new HashSet<String>(propertyNames);
+    propertyNames2 = new HashSet<>(propertyNames);
     propertyNames2.add(EMPTY);
     propertyNames2.add("not a property");
-    messages2 = new HashSet<String>(messages);
+    messages2 = new HashSet<>(messages);
     messages2.add(EMPTY);
     messages2.add("another message");
-    throwables2 = new HashSet<Throwable>(throwables);
+    throwables2 = new HashSet<>(throwables);
     throwables2.add(new Exception());
   }
 
   private Set<SetterPropertyException> createSubjects() {
-    Set<SetterPropertyException> result = new HashSet<SetterPropertyException>();
+    Set<SetterPropertyException> result = new HashSet<>();
     for (String message : messages) {
       for (String propertyName : propertyNames) {
         for (Object origin : origins) {
           for (Throwable t : throwables) {
-            for (Object vetoedValue : vetoedValues) {
-              result.add(new SetterPropertyException(origin, propertyName, vetoedValue, message, t));
-            }
+            result.addAll(vetoedValues.stream().map(vetoedValue
+                    -> new SetterPropertyException(origin, propertyName, vetoedValue, message, t))
+                    .collect(Collectors.toList()));
           }
         }
       }
@@ -131,7 +131,7 @@ public class SetterPropertyExceptionTest {
   public static void assertTypeInvariants(SetterPropertyException subject) {
     PropertyExceptionTest.assertTypeInvariants(subject);
     assertNotNull(subject.getPropertyName());
-    assertTrue(subject.getOrigin() == null ? subject.getPropertyValue() == null : true);
+    assertTrue(subject.getOrigin() != null || subject.getPropertyValue() == null);
   }
 
   private void testSetterPropertyExceptionObjectStringObjectStringThrowable(final Object origin,
@@ -248,7 +248,7 @@ public class SetterPropertyExceptionTest {
     boolean result = subject.like(other);
     // validate
     ValuePropertyExceptionTest.testLike(subject, other);
-    assertTrue(result ? eqn(subject.getVetoedValue(), ((SetterPropertyException)other).getVetoedValue()) : true);
+    assertTrue(!result || eqn(subject.getVetoedValue(), ((SetterPropertyException) other).getVetoedValue()));
     assertTypeInvariants(subject);
   }
 
@@ -259,25 +259,20 @@ public class SetterPropertyExceptionTest {
   @Test
   public void testLike() {
     for (SetterPropertyException subject : subjects) {
-      for (Object origin : origins2) {
-        if (origin != null) {
-          for (String propertyName : propertyNames2) {
-            if ((propertyName == null) || hasProperty(origin.getClass(), propertyName)) {
-              for (String message : messages2) {
-                if ((message == null) || (! message.equals(""))) {
-                  for (Throwable cause : throwables2) {
-                    testLike(subject, new PropertyException(origin, propertyName, message, cause));
-                    testLike(subject, new ValuePropertyException(origin, propertyName, message, cause));
-                    for (Object vetoedValue : vetoedValues) {
-                      testLike(subject, new SetterPropertyException(origin, propertyName, vetoedValue, message, cause));
+      origins2.stream().filter(origin
+              -> origin != null).forEach(origin
+              -> propertyNames2.stream().filter(propertyName
+                -> (propertyName == null) || hasProperty(origin.getClass(), propertyName)).forEach(propertyName
+                -> messages2.stream().filter(message -> (message == null) || (!message.equals(""))).forEach(message
+                -> {
+                    for (Throwable cause : throwables2) {
+                      testLike(subject, new PropertyException(origin, propertyName, message, cause));
+                      testLike(subject, new ValuePropertyException(origin, propertyName, message, cause));
+                      for (Object vetoedValue : vetoedValues) {
+                        testLike(subject, new SetterPropertyException(origin, propertyName, vetoedValue, message, cause));
+                      }
                     }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                  })));
       testLike(subject, null);
     }
   }

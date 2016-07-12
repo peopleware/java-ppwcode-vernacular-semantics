@@ -17,23 +17,23 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.exception;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.ppwcode.util.reflect_I.PropertyHelpers.hasProperty;
-import static org.ppwcode.vernacular.exception_III.ApplicationException.DEFAULT_MESSAGE_KEY;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static org.junit.Assert.*;
+import static org.ppwcode.vernacular.exception.IV.ApplicationException.DEFAULT_MESSAGE_KEY;
+import static org.ppwcode.vernacular.semantics.VII.util.PropertyHelpers.hasProperty;
+
+
+@SuppressWarnings({"WeakerAccess", "Duplicates", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"})
 public class ValuePropertyExceptionTest {
 
   public final static String EMPTY = "";
@@ -54,53 +54,52 @@ public class ValuePropertyExceptionTest {
   @Before
   public void setUp() throws Exception {
 //    originMock = new OriginStub();
-    messages = new HashSet<String>();
+    messages = new HashSet<>();
     messages.add(null);
     messages.add("stub message");
-    propertyNames = new HashSet<String>();
-    // null not allowed as propertyname
+    propertyNames = new HashSet<>();
+    // null not allowed as property name
     propertyNames.add("stubProperty");
-    propertyValues = new HashSet<Object>();
+    propertyValues = new HashSet<>();
     propertyValues.add(null);
     propertyValues.add(new Object());
-    propertyValues.add(new String());
+    propertyValues.add("");
     propertyValues.add(new Date());
-    throwables = new HashSet<Throwable>();
+    throwables = new HashSet<>();
     throwables.add(null);
     throwables.add(new Throwable());
-    origins = new HashSet<PropertyExceptionTest.OriginStub>();
+    origins = new HashSet<>();
     for (Object propertyValue : propertyValues) {
       PropertyExceptionTest.OriginStub origin = new PropertyExceptionTest.OriginStub();
       origin.setStubProperty(propertyValue);
       origins.add(origin);
     }
     subjects = createSubjects();
-    origins2 = new HashSet<Object>(origins);
+    origins2 = new HashSet<>(origins);
     origins2.add(null);
     origins2.add(new Object());
-    originTypes2 = new HashSet<Class<?>>();
+    originTypes2 = new HashSet<>();
     originTypes2.add(PropertyExceptionTest.OriginStub.class);
     originTypes2.add(null);
     originTypes2.add(Object.class);
     originTypes2.add(PropertyException.class);
-    propertyNames2 = new HashSet<String>(propertyNames);
+    propertyNames2 = new HashSet<>(propertyNames);
     propertyNames2.add(EMPTY);
     propertyNames2.add("not a property");
-    messages2 = new HashSet<String>(messages);
+    messages2 = new HashSet<>(messages);
     messages2.add(EMPTY);
     messages2.add("another message");
-    throwables2 = new HashSet<Throwable>(throwables);
+    throwables2 = new HashSet<>(throwables);
     throwables2.add(new Exception());
   }
 
   private Set<ValuePropertyException> createSubjects() {
-    Set<ValuePropertyException> result = new HashSet<ValuePropertyException>();
+    Set<ValuePropertyException> result = new HashSet<>();
     for (String message : messages) {
       for (String propertyName : propertyNames) {
         for (Object origin : origins) {
-          for (Throwable t : throwables) {
-            result.add(new ValuePropertyException(origin, propertyName, message, t));
-          }
+          result.addAll(throwables.stream().map(t
+                  -> new ValuePropertyException(origin, propertyName, message, t)).collect(Collectors.toList()));
         }
       }
     }
@@ -123,7 +122,7 @@ public class ValuePropertyExceptionTest {
   public static void assertTypeInvariants(ValuePropertyException subject) {
     PropertyExceptionTest.assertTypeInvariants(subject);
     assertNotNull(subject.getPropertyName());
-    assertTrue(subject.getOrigin() == null ? subject.getPropertyValue() == null : true);
+    assertTrue(subject.getOrigin() != null || subject.getPropertyValue() == null);
   }
 
   private void testValuePropertyExceptionObjectStringObjectStringThrowable(final Object origin,
@@ -228,7 +227,7 @@ public class ValuePropertyExceptionTest {
     boolean result = subject.like(other);
     // validate
     PropertyExceptionTest.testLike(subject, other);
-    assertTrue(result ? eqn(subject.getPropertyValue(), ((ValuePropertyException)other).getPropertyValue()) : true);
+    assertTrue(!result || eqn(subject.getPropertyValue(), ((ValuePropertyException) other).getPropertyValue()));
     assertTypeInvariants(subject);
   }
 
@@ -241,87 +240,20 @@ public class ValuePropertyExceptionTest {
     for (ValuePropertyException subject : subjects) {
       for (Object origin : origins2) {
         if (origin != null) {
-          for (String propertyName : propertyNames2) {
-            if ((propertyName == null) || hasProperty(origin.getClass(), propertyName)) {
-              for (String message : messages2) {
-                if ((message == null) || (! message.equals(""))) {
-                  for (Throwable cause : throwables2) {
-                    testLike(subject, new ValuePropertyException(origin, propertyName, message, cause));
-                    testLike(subject, new PropertyException(origin, propertyName, message, cause));
-                  }
-                }
-              }
-            }
-          }
+          propertyNames2.stream().filter(propertyName
+                  -> (propertyName == null) || hasProperty(origin.getClass(), propertyName)).forEach(propertyName
+                  -> messages2.stream().filter(message -> (message == null) || (!message.equals(""))).forEach(message
+                  -> {
+                        for (Throwable cause : throwables2) {
+                          testLike(subject, new ValuePropertyException(origin, propertyName, message, cause));
+                          testLike(subject, new PropertyException(origin, propertyName, message, cause));
+                        }
+                  }));
         }
         testLike(subject, null);
       }
     }
   }
-
-//  @Test
-//  public void testHasPropertiesObjectStringStringThrowable() {
-//    for (ValuePropertyException subject : subjects) {
-//      for (Object origin : origins2) {
-//        for (String propertyName : propertyNames2) {
-//          for (String message : messages2) {
-//            for (Throwable cause : throwables2) {
-//              PropertyExceptionTest.testHasPropertiesObjectStringStringThrowable(subject, origin, propertyName, message, cause);
-//              assertTypeInvariants(subject);
-//            }
-//          }
-//        }
-//      }
-//    }
-//  }
-//
-//  @Test
-//  public void testHasPropertiesClassOfQStringStringThrowable() {
-//    for (ValuePropertyException subject : subjects) {
-//      for (Class<?> originType : originTypes2) {
-//        for (String propertyName : propertyNames2) {
-//          for (String message : messages2) {
-//            for (Throwable cause : throwables2) {
-//              PropertyExceptionTest.testHasPropertiesClassOfQStringStringThrowable(subject, originType, propertyName, message, cause);
-//              assertTypeInvariants(subject);
-//            }
-//          }
-//        }
-//      }
-//    }
-//  }
-//
-//  @Test
-//  public void testReportsOnObjectStringStringThrowable() {
-//    for (ValuePropertyException subject : subjects) {
-//      for (Object origin : origins2) {
-//        for (String propertyName : propertyNames2) {
-//          for (String message : messages2) {
-//            for (Throwable cause : throwables2) {
-//              PropertyExceptionTest.testReportsOnObjectStringStringThrowable(subject, origin, propertyName, message, cause);
-//              assertTypeInvariants(subject);
-//            }
-//          }
-//        }
-//      }
-//    }
-//  }
-//
-//  @Test
-//  public void testReportsOnClassOfQStringStringThrowable() {
-//    for (ValuePropertyException subject : subjects) {
-//      for (Class<?> originType : originTypes2) {
-//        for (String propertyName : propertyNames2) {
-//          for (String message : messages2) {
-//            for (Throwable cause : throwables2) {
-//              PropertyExceptionTest.testReportsOnClassOfQStringStringThrowable(subject, originType, propertyName, message, cause);
-//              assertTypeInvariants(subject);
-//            }
-//          }
-//        }
-//      }
-//    }
-//  }
 
 }
 

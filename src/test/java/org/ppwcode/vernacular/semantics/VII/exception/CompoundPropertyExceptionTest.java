@@ -17,22 +17,19 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.exception;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.ppwcode.vernacular.exception_III.ApplicationException.DEFAULT_MESSAGE_KEY;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.ppwcode.vernacular.exception.IV.ApplicationException.DEFAULT_MESSAGE_KEY;
 
 
+@SuppressWarnings({"Duplicates", "WeakerAccess", "FieldCanBeLocal", "MismatchedQueryAndUpdateOfCollection"})
 public class CompoundPropertyExceptionTest {
 
   public final static String EMPTY = "";
@@ -42,7 +39,7 @@ public class CompoundPropertyExceptionTest {
   private Set<String> messages; // not empty
   private Set<Throwable> throwables;
   private final boolean[] booleans = {true, false};
-  private Set<Set<PropertyException>> elementss;
+  private Set<Set<PropertyException>> elementsSet;
   private Set<CompoundPropertyException> subjects;
 
   private Set<Object> origins2;
@@ -54,87 +51,87 @@ public class CompoundPropertyExceptionTest {
   @Before
   public void setUp() throws Exception {
     originMock = new PropertyExceptionTest.OriginStub();
-    elementss = new HashSet<Set<PropertyException>>();
+    elementsSet = new HashSet<>();
     // empty set
-    Set<PropertyException> elements = new HashSet<PropertyException>();
-    elementss.add(elements);
+    Set<PropertyException> elements = new HashSet<>();
+    elementsSet.add(elements);
     // one element
     PropertyExceptionTest pet = new PropertyExceptionTest();
     pet.setUp();
     for (PropertyException pe : pet.subjects) {
-      elements = new HashSet<PropertyException>();
+      elements = new HashSet<>();
       elements.add(pe);
-      elementss.add(elements);
+      elementsSet.add(elements);
     }
     pet.tearDown();
-    SetterPropertyExceptionTest spet = new SetterPropertyExceptionTest();
-    spet.setUp();
-    for (SetterPropertyException spe : spet.subjects) {
-      elements = new HashSet<PropertyException>();
+    SetterPropertyExceptionTest setterPropertyExceptionTest = new SetterPropertyExceptionTest();
+    setterPropertyExceptionTest.setUp();
+    for (SetterPropertyException spe : setterPropertyExceptionTest.subjects) {
+      elements = new HashSet<>();
       elements.add(spe);
-      elementss.add(elements);
+      elementsSet.add(elements);
     }
-    spet.tearDown();
+    setterPropertyExceptionTest.tearDown();
     // batch of elements
-    elements = new HashSet<PropertyException>();
+    elements = new HashSet<>();
     pet = new PropertyExceptionTest();
     pet.setUp();
     elements.addAll(pet.subjects);
     pet.tearDown();
-    spet = new SetterPropertyExceptionTest();
-    spet.setUp();
-    elements.addAll(spet.subjects);
-    spet.tearDown();
-    elementss.add(elements);
+    setterPropertyExceptionTest = new SetterPropertyExceptionTest();
+    setterPropertyExceptionTest.setUp();
+    elements.addAll(setterPropertyExceptionTest.subjects);
+    setterPropertyExceptionTest.tearDown();
+    elementsSet.add(elements);
     // batch of elements with a compound
-    elements = new HashSet<PropertyException>();
+    elements = new HashSet<>();
     pet = new PropertyExceptionTest();
     pet.setUp();
     elements.addAll(pet.subjects);
     pet.tearDown();
-    spet = new SetterPropertyExceptionTest();
-    spet.setUp();
-    elements.addAll(spet.subjects);
-    spet.tearDown();
+    setterPropertyExceptionTest = new SetterPropertyExceptionTest();
+    setterPropertyExceptionTest.setUp();
+    elements.addAll(setterPropertyExceptionTest.subjects);
+    setterPropertyExceptionTest.tearDown();
     elements.add(new CompoundPropertyException(PropertyExceptionTest.OriginStub.class, null, null, null));
-    elementss.add(elements);
-    // batch of elements with a compound in a compoound, which is this (loop) NOT DONE YET
-    messages = new HashSet<String>();
+    elementsSet.add(elements);
+    // batch of elements with a compound in a compound, which is this (loop) NOT DONE YET
+    messages = new HashSet<>();
     messages.add(null);
     messages.add("stub message");
-    propertyNames = new HashSet<String>();
-    // null not allowed as propertyname
+    propertyNames = new HashSet<>();
+    // null not allowed as property name
     propertyNames.add("stubProperty");
-    throwables = new HashSet<Throwable>();
+    throwables = new HashSet<>();
     throwables.add(null);
     throwables.add(new Throwable());
     subjects = createSubjects();
-    origins2 = new HashSet<Object>();
+    origins2 = new HashSet<>();
     origins2.add(originMock);
     origins2.add(null);
     origins2.add(new Object());
-    originTypes2 = new HashSet<Class<?>>();
+    originTypes2 = new HashSet<>();
     originTypes2.add(PropertyExceptionTest.OriginStub.class);
     originTypes2.add(null);
     originTypes2.add(Object.class);
     originTypes2.add(PropertyException.class);
-    propertyNames2 = new HashSet<String>(propertyNames);
+    propertyNames2 = new HashSet<>(propertyNames);
     propertyNames2.add(EMPTY);
     propertyNames2.add("not a property");
-    messages2 = new HashSet<String>(messages);
+    messages2 = new HashSet<>(messages);
     messages2.add(EMPTY);
     messages2.add("another message");
-    throwables2 = new HashSet<Throwable>(throwables);
+    throwables2 = new HashSet<>(throwables);
     throwables2.add(new Exception());
   }
 
   private Set<CompoundPropertyException> createSubjects() {
-    Set<CompoundPropertyException> result = new HashSet<CompoundPropertyException>();
+    Set<CompoundPropertyException> result = new HashSet<>();
     for (boolean closed : booleans) {
       for (String message : messages) {
         for (String propertyName : propertyNames) {
           for (Throwable t : throwables) {
-            for (Set<PropertyException> elements : elementss) {
+            for (Set<PropertyException> elements : elementsSet) {
               CompoundPropertyException subject = new CompoundPropertyException(originMock, propertyName, message, t);
               for (PropertyException element : elements) {
                 try {
@@ -174,7 +171,7 @@ public class CompoundPropertyExceptionTest {
     originMock = null;
     messages = null;
     propertyNames = null;
-    elementss = null;
+    elementsSet = null;
     throwables = null;
     subjects = null;
     origins2 = null;
@@ -184,7 +181,7 @@ public class CompoundPropertyExceptionTest {
 
   public static void assertTypeInvariants(CompoundPropertyException subject) {
     PropertyExceptionTest.assertTypeInvariants(subject);
-    assertTrue(subject.getElementExceptionsMap().size() > 1 ? subject.getPropertyName() == null : true);
+    assertTrue(subject.getElementExceptionsMap().size() <= 1 || subject.getPropertyName() == null);
     assertNotNull(subject.getElementExceptionsMap());
     assertFalse(subject.getElementExceptionsMap().containsKey(EMPTY));
     assertFalse(subject.getElementExceptionsMap().containsValue(null));
@@ -195,14 +192,13 @@ public class CompoundPropertyExceptionTest {
     for (Map.Entry<String, Set<PropertyException>> e : subject.getElementExceptionsMap().entrySet()) {
       for (PropertyException pe : e.getValue()) {
         eqn(pe.getPropertyName(), e.getKey());
-        assertTrue(subject.getOrigin() != null ? subject.getOrigin() == pe.getOrigin() : true);
-        assertTrue(subject.getOriginType() != null ? subject.getOriginType() == pe.getOriginType() : true);
+        assertTrue(subject.getOrigin() == null || subject.getOrigin() == pe.getOrigin());
+        assertTrue(subject.getOriginType() == null || subject.getOriginType() == pe.getOriginType());
         assertFalse(pe instanceof CompoundPropertyException);
       }
     }
-    assertTrue(subject.getPropertyName() != null ? subject.getElementExceptionsMap().size() <= 1 : true);
-    assertTrue(subject.getPropertyName() != null && subject.getElementExceptionsMap().size() > 0 ?
-               subject.getElementExceptionsMap().keySet().contains(subject.getPropertyName()) : true);
+    assertTrue(subject.getPropertyName() == null || subject.getElementExceptionsMap().size() <= 1);
+    assertTrue(!(subject.getPropertyName() != null && subject.getElementExceptionsMap().size() > 0) || subject.getElementExceptionsMap().keySet().contains(subject.getPropertyName()));
   }
 
   private static boolean eqn(String s1, String s2) {
@@ -365,9 +361,7 @@ public class CompoundPropertyExceptionTest {
 
   @Test
   public void testClose() {
-    for (CompoundPropertyException subject : subjects) {
-      testClose(subject);
-    }
+    subjects.forEach(CompoundPropertyExceptionTest::testClose);
   }
 
   private static void testIsEmpty(CompoundPropertyException subject) {
@@ -379,9 +373,7 @@ public class CompoundPropertyExceptionTest {
 
   @Test
   public void testIsEmpty() {
-    for (CompoundPropertyException subject : subjects) {
-      testIsEmpty(subject);
-    }
+    subjects.forEach(CompoundPropertyExceptionTest::testIsEmpty);
   }
 
   private static void testGetGeneralElementExceptions(CompoundPropertyException subject) {
@@ -393,27 +385,21 @@ public class CompoundPropertyExceptionTest {
 
   @Test
   public void testGetGeneralElementExceptions() {
-    for (CompoundPropertyException subject : subjects) {
-      testGetGeneralElementExceptions(subject);
-    }
+    subjects.forEach(CompoundPropertyExceptionTest::testGetGeneralElementExceptions);
   }
 
   private static void testGetElementExceptions(CompoundPropertyException subject) {
     // execute
     Set<PropertyException> result = subject.getElementExceptions();
     // validate
-    Set<PropertyException> expected = new HashSet<PropertyException>();
-    for (Set<PropertyException> s : subject.getElementExceptionsMap().values()) {
-      expected.addAll(s);
-    }
+    Set<PropertyException> expected = new HashSet<>();
+    subject.getElementExceptionsMap().values().forEach(expected::addAll);
     assertEquals(expected, result);
   }
 
   @Test
   public void testGetAllElementExceptions() {
-    for (CompoundPropertyException subject : subjects) {
-      testGetElementExceptions(subject);
-    }
+    subjects.forEach(CompoundPropertyExceptionTest::testGetElementExceptions);
   }
 
   private static void testAddElementException(CompoundPropertyException subject, PropertyException pExc) {
@@ -448,12 +434,12 @@ public class CompoundPropertyExceptionTest {
         testAddElementException(subject, pe);
       }
       pet.tearDown();
-      SetterPropertyExceptionTest spet = new SetterPropertyExceptionTest();
-      spet.setUp();
-      for (SetterPropertyException spe : spet.subjects) {
+      SetterPropertyExceptionTest setterPropertyExceptionTest = new SetterPropertyExceptionTest();
+      setterPropertyExceptionTest.setUp();
+      for (SetterPropertyException spe : setterPropertyExceptionTest.subjects) {
         testAddElementException(subject, spe);
       }
-      spet.tearDown();
+      setterPropertyExceptionTest.tearDown();
       testAddElementException(subject, subject);
       testAddElementException(subject, new CompoundPropertyException(new PropertyExceptionTest.OriginStub(), "stubProperty", "dada", null));
       testAddElementException(subject, new CompoundPropertyException(new PropertyExceptionTest.OriginStub(), null, "dada", null));
@@ -473,23 +459,19 @@ public class CompoundPropertyExceptionTest {
 
   @Test
   public void testGetSize() {
-    for (CompoundPropertyException subject : subjects) {
-      testGetSize(subject);
-    }
+    subjects.forEach(CompoundPropertyExceptionTest::testGetSize);
   }
 
   private static void testGetAnElement(CompoundPropertyException subject) {
     // execute
     PropertyException result = subject.getAnElement();
     // validate
-    assertTrue(result != null ? subject.contains(result) : true);
+    assertTrue(result == null || subject.contains(result));
   }
 
   @Test
   public void testGetAnElement() {
-    for (CompoundPropertyException subject : subjects) {
-      testGetAnElement(subject);
-    }
+    subjects.forEach(CompoundPropertyExceptionTest::testGetAnElement);
   }
 
   public static void testContainsPropertyException(CompoundPropertyException subject, PropertyException pe) {
@@ -498,8 +480,8 @@ public class CompoundPropertyExceptionTest {
     // validate
     boolean expected = false;
     if ((pe != null) && subject.getElementExceptionsMap().get(pe.getPropertyName()) != null) {
-      for (PropertyException cand : subject.getElementExceptionsMap().get(pe.getPropertyName())) {
-        if (cand.like(pe)) {
+      for (PropertyException propertyException : subject.getElementExceptionsMap().get(pe.getPropertyName())) {
+        if (propertyException.like(pe)) {
           expected = true;
           break;
         }
@@ -669,9 +651,7 @@ public class CompoundPropertyExceptionTest {
 
   @Test
   public void testThrowIfNotEmpty() {
-    for (CompoundPropertyException subject : subjects) {
-      testThrowIfNotEmpty(subject);
-    }
+    subjects.forEach(CompoundPropertyExceptionTest::testThrowIfNotEmpty);
   }
 
 }

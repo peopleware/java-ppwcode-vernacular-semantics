@@ -1,221 +1,758 @@
-<document>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <!--
-  Copyright 2004 - 2016 by PeopleWare n.v.
+    <properties>
+        <!-- Default project configuration -->
+      <java.version>1.8</java.version>
+      <java.encoding>UTF-8</java.encoding>
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+      <!-- Test dependencies -->
+      <version.unitils>3.4.2</version.unitils>
 
-      http://www.apache.org/licenses/LICENSE-2.0
+      <!-- Plugin management -->
+      <!-- Maven core plugins -->
+      <version.plugin.core.clean>3.0.0</version.plugin.core.clean>
+      <version.plugin.core.compiler>3.5.1</version.plugin.core.compiler>
+      <version.plugin.core.deploy>2.8.2</version.plugin.core.deploy>
+      <!--<version.plugin.core.failsafe>2.19.1</version.plugin.core.failsafe>-->
+      <version.plugin.core.install>2.5.2</version.plugin.core.install>
+      <version.plugin.core.resources>3.0.0</version.plugin.core.resources>
+      <version.plugin.core.site>3.5.1</version.plugin.core.site>
+      <version.plugin.core.surefire>2.19.1</version.plugin.core.surefire>
+      <!--<version.plugin.core.verifier>1.1</version.plugin.core.verifier> -->
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+      <!-- Maven packaging types/tools -->
+      <version.plugin.package.ear>2.10.1</version.plugin.package.ear>
+      <version.plugin.package.ejb>2.5.1</version.plugin.package.ejb>
+      <version.plugin.package.jar>3.0.0</version.plugin.package.jar>
+      <version.plugin.package.war>2.6</version.plugin.package.war>
+      <version.plugin.package.acr>3.0.0</version.plugin.package.acr>
+      <!--<version.plugin.package.shade>2.4.3</version.plugin.package.shade>-->
+      <version.plugin.package.source>3.0.0</version.plugin.package.source>
 
-  2016
-  $Revision$
-  $HeadURL$
-  -->
+      <!-- Maven reporting -->
+      <version.plugin.reporting.changelog>2.3</version.plugin.reporting.changelog>
+      <version.plugin.reporting.changes>2.12</version.plugin.reporting.changes>
+      <version.plugin.reporting.checkstyle>2.17</version.plugin.reporting.checkstyle>
+      <!--<version.plugin.reporting.doap>1.2</version.plugin.reporting.doap>-->
+      <!--<version.plugin.reporting.docck>1.1</version.plugin.reporting.docck>-->
+      <version.plugin.reporting.javadoc>2.10.3</version.plugin.reporting.javadoc>
+      <version.plugin.reporting.jdeps>3.0.0</version.plugin.reporting.jdeps>
+      <version.plugin.reporting.jxr>2.5</version.plugin.reporting.jxr>
+      <version.plugin.reporting.linkcheck>1.2</version.plugin.reporting.linkcheck>
+      <version.plugin.reporting.pmd>3.6</version.plugin.reporting.pmd>
+      <version.plugin.reporting.project-info>2.9</version.plugin.reporting.project-info>
+      <version.plugin.reporting.surefire>2.19.1</version.plugin.reporting.surefire>
 
-  <!-- see http://maven.apache.org/reference/plugins/changes/ for documentation -->
-  <!-- There are four valid values for action type:  add, fix, remove, update. -->
-  <properties>
-    <title>Changes to ppwcode vernacular semantics</title>
-    <author email="David_Van_Keer@peopleware.be">David Van Keer</author>
-    <author email="Jan_Dockx@peopleware.be">Jan Dockx</author>
-    <author email="Nele_Smeets@peopleware.be">Nele Smeets</author>
-    <author email="Wim_Lambrechts@peopleware.be">Wim Lambrechts</author>
-  </properties>
-  <body>
+      <!-- Maven tools -->
+      <!--<version.plugin.tools.archetype>2.4</version.plugin.tools.archetype>-->
+      <!--<version.plugin.tools.assembly>2.6</version.plugin.tools.assembly>-->
+      <!--<version.plugin.tools.dependency>2.10</version.plugin.tools.dependency>-->
+      <version.plugin.tools.enforcer>1.4.1</version.plugin.tools.enforcer>
+      <!--<version.plugin.tools.gpg>1.6</version.plugin.tools.gpg>-->
+      <!--<version.plugin.tools.help>2.2</version.plugin.tools.help>-->
+      <!--<version.plugin.tools.invoker>2.0.0</version.plugin.tools.invoker>-->
+      <!--<version.plugin.tools.jarsigner>1.4</version.plugin.tools.jarsigner>-->
+      <!--<version.plugin.tools.patch>1.2</version.plugin.tools.patch>-->
+      <!--<version.plugin.tools.pdf>1.3</version.plugin.tools.pdf>-->
+      <!--<version.plugin.tools.plugin>3.4</version.plugin.tools.plugin>-->
+      <version.plugin.tools.release>2.5.3</version.plugin.tools.release>
+      <!--<version.plugin.tools.remote-resources>1.5</version.plugin.tools.remote-resources>-->
+      <!--<version.plugin.tools.repository>2.4</version.plugin.tools.repository>-->
+      <version.plugin.tools.scm>1.9.4</version.plugin.tools.scm>
+      <version.plugin.tools.scm-publish>1.1</version.plugin.tools.scm-publish>
+      <version.plugin.tools.stage>1.0</version.plugin.tools.stage>
+      <!--<version.plugin.tools.toolchains>1.1</version.plugin.tools.toolchains>-->
 
-    <release version="VII v1.0" date="2016-07-11" description="revival">
-      <action dev="jand" type="update">
-        Everything is changed. This revives this code base after almost 8 years.
-        Java is now at version 8.
-      </action>
-    </release>
+      <!-- Codehaus:
+          animal-sniffer      Build signatures of APIs (JDK for example) and checks your classes against them.
+          build-helper        Attach extra artifacts and source folders to build.
+          castor              Generate sources from an XSD using Castor.
+          clirr               Compare binaries or sources for compatibility using Clirr
+          javacc              Generate sources from a JavaCC grammar.
+          jdepend             Generate a report on code metrics using JDepend.
+          nar-maven-plugin    Compiles C, C++, Fortran for different architectures.
+          native              Compiles C and C++ code with native compilers.
+          sql                 Executes SQL scripts from files or inline.
+          versions            Manage versions of your project, its modules, dependencies and plugins.
 
-    <release version="VI v1.1" date="2008-12-18" description="big cleanup">
-      <action dev="jand" type="fix">
-        AbstractSemanticBean.propertyNamesForToString now also does not include Maps, instead of only
-        skipping Collection-type properties.
-      </action>
-    </release>
+          and more at http://www.mojohaus.org/plugins.html
+      -->
 
-    <release version="VI v1.0" date="2008-12-18" description="big cleanup">
-      <action dev="jand" type="update">
-        Note that the package "i18n" is not finished, and should not be used.
-      </action>
-      <action dev="jand" type="update">
-        Moved project from PeopleWare to ppwcode. Packages thus have new names.
-      </action>
-      <action dev="jand" type="update">
-        Moved project from PeopleWare to ppwcode. Packages thus have new names.
-      </action>
-      <action dev="jand" type="update">
-        Using Toryt annotations for contracts.
-      </action>
-      <action dev="jand" type="update">
-        Cleanup of PropertyException. hasSameValues method is removed.
-        Brought code to Java 5 (generics and other changes).
-      </action>
-      <action dev="jand" type="update">
-        Cleanup of CompoundPropertyException. hasSameValues method is removed.
-        Added contains(PropertyException). Brought code to Java 5 (generics and other changes).
-      </action>
-      <action dev="jand" type="remove">
-        Removed almost-deprecated BeanInstantiationException.
-      </action>
-      <action dev="jand" type="remove">
-        Removed Delegate. This was never used.
-      </action>
-      <action dev="jand" type="remove">
-        Removed CircularityException. This was never used.
-      </action>
-      <action dev="jand" type="remove">
-        Removed ConstraintException and DuplicateKeyException.
-        If we continue to use these, they belong in the persistence
-        project.
-      </action>
-      <action dev="jand" type="remove">
-        Removed i18n concerns for the time being. There was little here,
-        and there will be less (or everything).
-      </action>
-      <action dev="jand" type="add">
-        SetterPropertyException, for almost all semantic exceptions with simple property setters
-        and constructors.
-      </action>
-      <action dev="jand" type="update">
-        RousseauBean methods are now non-JavaBean-property methods: wildExceptions() instead of
-        getWildExceptions(); civilized() instead of isCivilized().
-      </action>
-    </release>
+      <version.plugin.reporting.findbugs>3.0.3</version.plugin.reporting.findbugs>
+      <version.plugin.reporting.taglist>2.4</version.plugin.reporting.taglist>
+      <version.plugin.reporting.cobertura>2.7</version.plugin.reporting.cobertura>
 
-    <release version="V v1.0.0/1.1" date="2006-05-22"
-      description="Picture of J.J Rousseau">
-      <action dev="jand" type="fix">
-        Link to picture of J.J. Rousseau, from Wikipedia failed. Now we have the picture in the project.
-        The painting and the photo of the painting is in the public domain.
-      </action>
-    </release>
+      <!-- Google code:
+          cargo               Start/stop/configure J2EE containers and deploy to them.
+          clover              Generate a Clover report.
+          jalopy              Use Jalopy to format your source code.
+          rat                 Release Audit Tool (RAT) to verify files.
+          Genesis Plugins     Verify legal files in artifacts.
 
-    <release version="V v1.0.0/1.0" date="2005-09-05"
-      description="RousseauBean is changed into an interface">
-      <action dev="nsmeets" type="add">
-        RousseauBean is changed into an interface. An abstract subclass AbstractRousseauBean containing a partial implementation of the interface is introduced.
-      </action>
-    </release>
+          and more at https://code.google.com/hosting/search?q=maven+plugin+label%3Amaven&projectsearch=Search+Projects
+      -->
 
-    <release version="IV v1.1.0/2.0" date="2005-08-14"
-      description="Dependencies">
-      <action dev="jand" type="update">
-        Updated dependencies.
-      </action>
-    </release>
+      <version.extension.s3wagon>1.2.1</version.extension.s3wagon>
+    </properties>
 
-    <release version="IV v1.1.0/1.2" date="2005-06-15"
-          description="Fix for NullPointerException in debug code">
-      <action dev="jand" type="fix">
-        Fix for NullPointerException in debug code.
-      </action>
-    </release>
+  <!-- Meta information about the project -->
+  <groupId>org.ppwcode.vernacular</groupId>
+    <artifactId>semantics-VII</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>ppwcode semantics vernacular</name>
+    <description>
+      Vernacular, famework, guidelines, support for dealing with exceptions, errors and preconditions.
+    </description>
+    <inceptionYear>2004</inceptionYear>
+    <url>https://doc.ppwcode.org/java/${project.groupId}/${project.artifactId}/${project.version}/index.html</url>
 
-    <release version="IV v1.1.0/1.1" date="2005-04-19"
-          description="CompoundPropertyException close throws exception">
-      <action dev="jand" type="fix">
-    Fix for Beans.getNavigatedPropertyValue:
-      </action>
-    </release>
+    <licenses>
+      <license>
+        <name>Apache License, Version 2.0</name>
+        <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/peopleware/java-ppwcode-vernacular-exception</url>
+        <connection>scm:git:https://github.com/peopleware/java-ppwcode-vernacular-exception.git</connection>
+        <developerConnection>scm:git:https://github.com/peopleware/java-ppwcode-vernacular-exception.git</developerConnection>
+      <tag>HEAD</tag>
+  </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/peopleware/java-ppwcode-vernacular-exception/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>teamcity</system>
+        <url>https://teamcity.peopleware.be/</url>
+    </ciManagement>
+
+    <repositories>
+        <repository>
+            <id>maven.ppwcode.org</id>
+            <url>http://maven.ppwcode.org/</url>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+            <releases>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>maven.ppwcode.org</id>
+            <name>ppwcode Maven Repository</name>
+            <url>s3://maven.ppwcode.org</url>
+        </snapshotRepository>
+        <repository>
+            <id>maven.ppwcode.org</id>
+            <name>ppwcode Maven Snapshot Repository</name>
+            <url>s3://maven.ppwcode.org</url>
+        </repository>
+        <site>
+            <id>doc.ppwcode.org</id>
+            <name>Project Documentation Site</name>
+            <url>s3://doc.ppwcode.org/java/${project.groupId}/${project.artifactId}/${project.version}/</url>
+        </site>
+    </distributionManagement>
+
+    <dependencies>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.2</version>
+      </dependency>
+
+      <!-- Test dependencies -->
+      <dependency>
+        <groupId>org.unitils</groupId>
+        <artifactId>unitils-core</artifactId>
+        <version>${version.unitils}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.unitils</groupId>
+        <artifactId>unitils-easymock</artifactId>
+        <version>${version.unitils}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+
+    <organization>
+        <name>PeopleWare n.v.</name>
+        <url>http://www.peopleware.be/</url>
+    </organization>
+
+    <developers>
+      <developer>
+        <name>Jan Dockx</name>
+        <id>jandppw</id>
+        <email>Jan_Dockx@peopleware.be</email>
+        <timezone>+1</timezone>
+        <organization>PeopleWare n.v.</organization>
+        <organizationUrl>http://www.peopleware.be/</organizationUrl>
+        <roles>
+          <role>architect</role>
+          <role>developer</role>
+        </roles>
+      </developer>
+      <developer>
+        <name>David Van Keer</name>
+        <id>dvankeerppw</id>
+        <email>David_Van_Keer@peopleware.be</email>
+        <timezone>+1</timezone>
+        <organization>PeopleWare n.v.</organization>
+        <organizationUrl>http://www.peopleware.be/</organizationUrl>
+        <roles>
+          <role>developer</role>
+        </roles>
+      </developer>
+      <developer>
+        <name>Nele Smeets</name>
+        <id>nsmeets</id>
+        <email>Nele_Smeets@peopleware.be</email>
+        <timezone>+1</timezone>
+        <organization>PeopleWare n.v.</organization>
+        <organizationUrl>http://www.peopleware.be/</organizationUrl>
+        <roles>
+          <role>developer</role>
+        </roles>
+      </developer>
+    </developers>
+    <contributors>
+      <contributor>
+        <name>Dirk Couck</name>
+        <email>Dirk_Couck@peopleware.be</email>
+        <timezone>+1</timezone>
+        <organization>PeopleWare n.v.</organization>
+        <organizationUrl>http://www.peopleware.be/</organizationUrl>
+        <roles>
+          <role>project manager</role>
+        </roles>
+      </contributor>
+      <contributor>
+        <organization>PeopleWare n.v.</organization>
+        <organizationUrl>http://www.peopleware.be/</organizationUrl>
+        <timezone>+1</timezone>
+      </contributor>
+      <contributor>
+        <organization>AristA vzw</organization>
+        <organizationUrl>http://www.arista.be/</organizationUrl>
+        <timezone>+1</timezone>
+      </contributor>
+      <contributor>
+        <organization>HDP vzw</organization>
+        <organizationUrl>http://www.hdp.be/</organizationUrl>
+        <timezone>+1</timezone>
+      </contributor>
+      <contributor>
+        <organization>Ismar n.v.</organization>
+        <organizationUrl>http://www.ismar.be/</organizationUrl>
+        <timezone>+1</timezone>
+      </contributor>
+      <contributor>
+        <organization>FVB</organization>
+        <organizationUrl>http://www.fvb.be/</organizationUrl>
+        <timezone>+1</timezone>
+      </contributor>
+    </contributors>
+
+    <build>
+        <plugins>
+            <!-- Maven plugins configuration -->
+          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${java.encoding}</encoding>
+                    <debug>${java.debug}</debug>
+                    <showDeprecation>${java.deprecation}</showDeprecation>
+                    <showWarnings>${java.warning}</showWarnings>
+                    <optimize>${java.optimize}</optimize>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>${java.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!-- Also generated a test jar for each project -->
+                          <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+          <!--<plugin>-->
+          <!--<groupId>org.apache.maven.plugins</groupId>-->
+          <!--<artifactId>maven-checkstyle-plugin</artifactId>-->
+          <!--<executions>-->
+          <!--<execution>-->
+          <!--<id>validate</id>-->
+          <!--<phase>validate</phase>-->
+          <!--<configuration>-->
+          <!--<configLocation>be/peopleware/buildtools/checkstyle.xml</configLocation>-->
+          <!--<encoding>${java.encoding}</encoding>-->
+          <!--<consoleOutput>true</consoleOutput>-->
+          <!--<failsOnError>false</failsOnError>-->
+          <!--</configuration>-->
+          <!--<goals>-->
+          <!--<goal>check</goal>-->
+          <!--</goals>-->
+          <!--</execution>-->
+          <!--</executions>-->
+          <!--<dependencies>-->
+          <!--&lt;!&ndash; TODO (dvankeer): Version numbering to properties? &ndash;&gt;-->
+          <!--<dependency>-->
+          <!--<groupId>be.peopleware</groupId>-->
+          <!--<artifactId>buildtools</artifactId>-->
+          <!--<version>1.0.0-SNAPSHOT</version>-->
+          <!--</dependency>-->
+          <!--<dependency>-->
+          <!--<groupId>com.puppycrawl.tools</groupId>-->
+          <!--<artifactId>checkstyle</artifactId>-->
+          <!--<version>6.19</version>-->
+          <!--</dependency>-->
+          <!--</dependencies>-->
+          <!--</plugin>-->
+          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <inputEncoding>${java.encoding}</inputEncoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-descriptor</id>
+                        <goals>
+                            <goal>attach-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jdeps-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jdkinternals</goal>
+                            <goal>test-jdkinternals</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+          <!-- External plugins configuration -->
+          <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            <!--<configuration>-->
+            <!--<check>-->
+            <!--<branchRate>85</branchRate>-->
+            <!--<lineRate>85</lineRate>-->
+            <!--<haltOnFailure>true</haltOnFailure>-->
+            <!--<totalBranchRate>85</totalBranchRate>-->
+            <!--<totalLineRate>85</totalLineRate>-->
+            <!--<packageLineRate>85</packageLineRate>-->
+            <!--<packageBranchRate>85</packageBranchRate>-->
+            <!--</check>-->
+            <!--</configuration>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<goals>-->
+            <!--<goal>clean</goal>-->
+            <!--<goal>check</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-release-plugin</artifactId>
+              <configuration>
+                <tagNameFormat>release/@{project.version}</tagNameFormat>
+              </configuration>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Maven core plugins -->
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${version.plugin.core.clean}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.plugin.core.compiler}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${version.plugin.core.deploy}</version>
+                </plugin>
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-failsafe-plugin</artifactId>-->
+              <!--<version>${version.plugin.core.failsafe}</version>-->
+              <!--</plugin>-->
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${version.plugin.core.install}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${version.plugin.core.resources}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${version.plugin.core.site}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${version.plugin.core.surefire}</version>
+                </plugin>
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-verifier-plugin</artifactId>-->
+              <!--<version>${version.plugin.core.verifier}</version>-->
+              <!--</plugin>-->
 
 
-    <release version="IV v1.1.0/1.0" date="2005-04-19"
-          description="CompoundPropertyException close throws exception">
-      <action dev="jand" type="fix">
-    CompoundPropertyException close() now throws IllegalStateException
-    when called when already closed (can't close twice). This was introduced
-    to better trace a weird error that occurred in OLTS. This is considered
-    a bug fix in the contract (which is possible because
-    IllegalStateException is a RuntimeException).
-    For OLTS, this change has to appear also in a branch.
-      </action>
+              <!-- Maven packaging types/tools -->
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-ear-plugin</artifactId>
+                    <version>${version.plugin.package.ear}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-ejb-plugin</artifactId>
+                    <version>${version.plugin.package.ejb}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${version.plugin.package.jar}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${version.plugin.package.war}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-acr-plugin</artifactId>
+                    <version>${version.plugin.package.acr}</version>
+                </plugin>
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-shade-plugin</artifactId>-->
+              <!--<version>${version.plugin.package.shade}</version>-->
+              <!--</plugin>-->
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${version.plugin.package.source}</version>
+                </plugin>
 
-      <action dev="wlambrec" type="add">
-        Added Beans.getNavigatedPropertyValue:
-    The value of the property <code>propertyExpression</code>
-     of object <code>bean</code>. <code>propertyExpression</code>
-       can be an expression to navigate through an object graph,
-       of the form <code><var>property1</var>.<var>property2</var>.<var>property3</var></code>.
-      </action>
-    </release>
+
+              <!-- Maven reporting -->
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-changelog-plugin</artifactId>
+                    <version>${version.plugin.reporting.changelog}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-changes-plugin</artifactId>
+                    <version>${version.plugin.reporting.changes}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${version.plugin.reporting.checkstyle}</version>
+                </plugin>
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-doap-plugin</artifactId>-->
+              <!--<version>${version.plugin.reporting.doap}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-docck-plugin</artifactId>-->
+              <!--<version>${version.plugin.reporting.docck}</version>-->
+              <!--</plugin>-->
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${version.plugin.reporting.javadoc}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jdeps-plugin</artifactId>
+                    <version>${version.plugin.reporting.jdeps}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jxr-plugin</artifactId>
+                    <version>${version.plugin.reporting.jxr}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-linkcheck-plugin</artifactId>
+                    <version>${version.plugin.reporting.linkcheck}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${version.plugin.reporting.project-info}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                    <version>${version.plugin.reporting.surefire}</version>
+                </plugin>
 
 
-  <!-- this is wrong; version below should have been labeled
-      IV 1.1.0/1.0 -->
-    <release version="IV v1.0.1/1.0" date="2005-03-08"
-          description="PropertyException extra constructor">
-      <action dev="jand" type="add">
-        An extra constructor for PropertyExceptions, that take a boolean
-        argument that says whether the exception occurs during initialization
-        of the origin or not. If so, we should not carry a reference to
-        the incomplete origin.
-      </action>
-    </release>
+              <!-- Maven tools -->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-ant-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.ant}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-antrun-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.antrun}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-archetype-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.archetype}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-assembly-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.assembly}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-dependency-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.dependency}</version>-->
+              <!--</plugin>-->
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${version.plugin.tools.enforcer}</version>
+                </plugin>
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-gpg-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.gpg}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-help-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.help}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-invoker-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.invoker}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-jarsigner-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.jarsigner}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-patch-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.patch}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-pdf-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.pdf}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-plugin-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.plugin}</version>-->
+              <!--</plugin>-->
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-release-plugin</artifactId>
+                  <version>${version.plugin.tools.release}</version>
+              </plugin>
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-remote-resources-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.remote-resources}</version>-->
+              <!--</plugin>-->
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-repository-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.repository}</version>-->
+              <!--</plugin>-->
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>${version.plugin.tools.scm}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-publish-plugin</artifactId>
+                    <version>${version.plugin.tools.scm-publish}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-stage-plugin</artifactId>
+                    <version>${version.plugin.tools.stage}</version>
+                </plugin>
+              <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-toolchains-plugin</artifactId>-->
+              <!--<version>${version.plugin.tools.toolchains}</version>-->
+              <!--</plugin>-->
 
-    <release version="IV v1.0.0/1.0" date="2005-03-08"
-          description="PropertyException.getOrigin() can be null">
-      <action dev="jand" type="update">
-        PropertyExceptions no longer have a mandatory origin. This is needed to be able
-        to throw PropertyExceptions during bean initialization. This change is
-        incompatible, because an existing type invariant is removed.
-        The BeanInstantiationException is not really deprecated, but maybe it should be.
-      </action>
-    </release>
+              <!-- External plugins -->
+              <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>${version.plugin.reporting.cobertura}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
-    <release version="III v1.0.0/1.0" date="2005-03-06"
-          description="Moved out ...persistent.">
-      <action dev="jand" type="remove">
-        Moved bean_II.persistent to separate lib ppw-persistence.
-      </action>
-    </release>
+        <extensions>
+            <extension>
+                <groupId>org.kuali.maven.wagons</groupId>
+                <artifactId>maven-s3-wagon</artifactId>
+                <version>${version.extension.s3wagon}</version>
+            </extension>
+        </extensions>
+    </build>
 
-    <release version="II v2.0.0/2.0" date="2005-03-03"
-          description="Move of contract functions to Toryt, add AsynchronousCrudFactory">
-      <action dev="jand" type="remove">
-        Deprecated be.peopleware.bean_II.Associations. This functionality is
-        now in Toryt.
-      </action>
-      <action dev="jand" type="add">
-        Added AsynchronousCrudFactory and abstract subtype.
-      </action>
-    </release>
-
-    <release version="II v1.1.0/2.0" date="2005-01-04" description="Extension">
-      <action dev="jand" type="add">
-        Added method reportsOn to PropertyException and CompoundPropertyException.
-      </action>
-    </release>
-
-    <release version="I v1.1.1/1.0" date="2005-01-04" description="Bugfix release">
-      <action dev="dvankeer" type="fix">
-        Worked around the hibernate caching issue. Check if returned type does
-        match the requested type. If not a IdNotFoundException is generated.
-      </action>
-    </release>
-
-    <release version="I v1.1.0/1.0" date="2005-01-04" description="Hibernate">
-      <action dev="jand" type="add">
-        Persistency support for Hibernate.
-      </action>
-    </release>
-
-    <release version="I v1.0.0/1.0" date="2004-12-20" description="First release">
-      <action dev="jand" type="add">
-        First release with this version number scheme.
-      </action>
-    </release>
-
-  </body>
-</document>
+    <reporting>
+        <plugins>
+            <!-- Changelog generation based on SCM -->
+          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changelog-plugin</artifactId>
+                <version>${version.plugin.reporting.changelog}</version>
+            </plugin>
+          <!-- Changes plugin for milestone and release overview -->
+          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <version>${version.plugin.reporting.changes}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>changes-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+          <!-- Checkstyle reports - TODO (dvankeer): Checkstyle configuration? -->
+          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${version.plugin.reporting.checkstyle}</version>
+                <configuration>
+                    <encoding>${java.encoding}</encoding>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+          <!-- Javadoc reporting (code and test code) -->
+          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${version.plugin.reporting.javadoc}</version>
+            </plugin>
+          <!-- Unit/Integration test reporting -->
+          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${version.plugin.reporting.surefire}</version>
+            </plugin>
+          <!-- FindBugs reporting -->
+          <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${version.plugin.reporting.findbugs}</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+                <version>${version.plugin.reporting.taglist}</version>
+                <configuration>
+                    <multipleLineComments>true</multipleLineComments>
+                    <tags>
+                        <tag>MUDO</tag>
+                        <tag>@mudo</tag>
+                        <tag>NIY</tag>
+                        <tag>@niy</tag>
+                        <tag>XXX</tag>
+                        <tag>TODO</tag>
+                        <tag>@todo</tag>
+                        <tag>IDEA</tag>
+                        <tag>@idea</tag>
+                    </tags>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${version.plugin.reporting.cobertura}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${version.plugin.reporting.pmd}</version>
+                <configuration>
+                    <minimumTokens>100</minimumTokens>
+                    <targetJdk>${java.version}</targetJdk>
+                    <sourceEncoding>${java.encoding}</sourceEncoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>
