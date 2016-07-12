@@ -21,8 +21,8 @@ import java.beans.PropertyDescriptor;
 import java.util.*;
 
 import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
-import static org.ppwcode.util.reflect_I.PropertyHelpers.propertyValue;
+import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.preArgumentNotNull;
+import static org.ppwcode.vernacular.semantics.VII.util.PropertyHelpers.propertyValue;
 
 
 /**
@@ -31,6 +31,7 @@ import static org.ppwcode.util.reflect_I.PropertyHelpers.propertyValue;
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class AbstractSemanticBean implements SemanticBean {
 
   @Override
@@ -45,7 +46,7 @@ public abstract class AbstractSemanticBean implements SemanticBean {
 
   /**
    * Because this method is final, it is impossible to make a subtype
-   * Cloneable succesfully.
+   * Cloneable successfully.
    */
   /*
   @MethodContract(
@@ -61,12 +62,12 @@ public abstract class AbstractSemanticBean implements SemanticBean {
   @Override
   public final String toString() {
     StringBuilder result = new StringBuilder();
-    HashSet<AbstractSemanticBean> cycleDetector = new HashSet<AbstractSemanticBean>();
+    HashSet<AbstractSemanticBean> cycleDetector = new HashSet<>();
     appendToString(result, cycleDetector);
     return result.toString();
   }
 
-  private final void appendToString(StringBuilder sb, HashSet<AbstractSemanticBean> cycleDetector) {
+  private void appendToString(StringBuilder sb, HashSet<AbstractSemanticBean> cycleDetector) {
     preArgumentNotNull(sb);
     preArgumentNotNull(cycleDetector);
     if (cycleDetector.contains(this)) {
@@ -90,12 +91,12 @@ public abstract class AbstractSemanticBean implements SemanticBean {
     preArgumentNotNull(sb);
     preArgumentNotNull(cycleDetector);
     sb.append("[");
-    Iterator<String> iter = propertyNamesForToString().iterator();
-    while (iter.hasNext()) {
-      String pname = iter.next();
-      sb.append(pname);
+    Iterator<String> iterator = propertyNamesForToString().iterator();
+    while (iterator.hasNext()) {
+      String propertyName = iterator.next();
+      sb.append(propertyName);
       sb.append(" = ");
-      Object pValue = propertyValue(this, pname);
+      Object pValue = propertyValue(this, propertyName);
       if (pValue == null) {
         sb.append("null");
       }
@@ -106,7 +107,7 @@ public abstract class AbstractSemanticBean implements SemanticBean {
         AbstractSemanticBean asb = (AbstractSemanticBean)pValue;
         asb.appendToString(sb, cycleDetector);
       }
-      if (iter.hasNext()) {
+      if (iterator.hasNext()) {
         sb.append(", ");
       }
     }
@@ -122,12 +123,10 @@ public abstract class AbstractSemanticBean implements SemanticBean {
    * that are not of a type that is a subtype of {@link Collection}
    * or {@link Map}, or an array, and that is not the {@link #getClass()} method.
    * The order is indeterminate.
-   *
-   * // MUDO contract
    */
   protected Set<String> propertyNamesForToString() {
     PropertyDescriptor[] pds = getPropertyDescriptors(this);
-    Set<String> result = new HashSet<String>(pds.length);
+    Set<String> result = new HashSet<>(pds.length);
     for (int i = 0; i < pds.length; i++) {
       Class<?> propertyType = pds[i].getPropertyType();
       if (! Collection.class.isAssignableFrom(propertyType) &&
@@ -142,13 +141,11 @@ public abstract class AbstractSemanticBean implements SemanticBean {
 
   /**
    * Convenience method for generating the toString of to-many associations.
-   *
-   * // MUDO move somewhere else
    */
   /*
   @MethodContract(pre = @Expression("c != null"), post = @Expression("true"))
   */
-  protected final static String collectionString(final Collection<?> c) {
+  protected static String collectionString(final Collection<?> c) {
     assert c != null;
     StringBuilder result = new StringBuilder("{");
     Iterator<?> iter = c.iterator();

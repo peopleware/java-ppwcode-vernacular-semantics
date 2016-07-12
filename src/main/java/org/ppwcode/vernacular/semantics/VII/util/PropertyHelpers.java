@@ -17,9 +17,13 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.util;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.apache.commons.beanutils.PropertyUtils;
 
 import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.preArgumentNotNull;
+import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.unexpectedException;
 
 
 /**
@@ -123,44 +127,44 @@ public final class PropertyHelpers {
     // not found
     return null;
   }
-//
-//  /**
-//   * Returns the {@link PropertyDescriptor} of the property with simple name <code>propertyName</code> of
-//   * <code>type</code>. If no property descriptor is found, this is considered a programming error.
-//   *
-//   * @param     type
-//   *            The bean type to get the property descriptor of
-//   * @param     propertyName
-//   *            The simple programmatic name of the property we want the descriptor for
-//   *
-//   * @note This method was deprecated in version V, and now no longer is. The reason for its existence is that
-//   *       {@link PropertyUtils} does not feature a method to retrieve a {@link PropertyDescriptor} based on a
-//   *       {@link Class} argument.
-//   * @note renamed from {@code getPropertyDescriptor()}
-//   *
-//   * @idea extend to use BeanUtils mapped notation for properties
-//   */
-//  @MethodContract(
-//    pre  = {
-//      @Expression("_type != null"),
-//      @Expression("hasProperty(_type, _propertyName)")
-//    },
-//    post = {
-//      @Expression("result != null"),
-//      @Expression("PropertyUtils.getPropertyDescriptors(_type).contains(result)"),
-//      @Expression("result.name == _propertyName")
-//    }
-//  )
-//  public static PropertyDescriptor simplePropertyDescriptor(final Class<?> type, final String propertyName) {
-//    assert preArgumentNotNull(type, "clazz");
-//    PropertyDescriptor result = simplePropertyDescriptorHelper(type, propertyName);
-//    if (result == null) {
-//      // not found: precondition violation
-//      throw new AssertionError("no property descriptor found with name \"" + propertyName + "\" in type " + type.getName());
-//    }
-//    return result;
-//  }
-//
+
+  /**
+   * Returns the {@link PropertyDescriptor} of the property with simple name <code>propertyName</code> of
+   * <code>type</code>. If no property descriptor is found, this is considered a programming error.
+   *
+   * @param     type
+   *            The bean type to get the property descriptor of
+   * @param     propertyName
+   *            The simple programmatic name of the property we want the descriptor for
+   *
+   * <p>Note: This method was deprecated in version V of ppwcode util reflect, and now no longer is.
+   *   The reason for its existence is that {@link PropertyUtils} does not feature a method to retrieve a
+   *   {@link PropertyDescriptor} based on a {@link Class} argument.
+   * <p>Note: renamed from {@code getPropertyDescriptor()}</p>
+   */
+  /*
+  @MethodContract(
+    pre  = {
+      @Expression("_type != null"),
+      @Expression("hasProperty(_type, _propertyName)")
+    },
+    post = {
+      @Expression("result != null"),
+      @Expression("PropertyUtils.getPropertyDescriptors(_type).contains(result)"),
+      @Expression("result.name == _propertyName")
+    }
+  )
+  */
+  public static PropertyDescriptor simplePropertyDescriptor(final Class<?> type, final String propertyName) {
+    assert preArgumentNotNull(type, "clazz");
+    PropertyDescriptor result = simplePropertyDescriptorHelper(type, propertyName);
+    if (result == null) {
+      // not found: precondition violation
+      throw new AssertionError("no property descriptor found with name \"" + propertyName + "\" in type " + type.getName());
+    }
+    return result;
+  }
+
 //  /**
 //   * Returns the {@link PropertyDescriptor} of the property with name {@code propertyName} of
 //   * <code>type</code>. {@code propertyName} can have a nested property name syntax
@@ -357,42 +361,43 @@ public final class PropertyHelpers {
 
   // DONE UNTIL HERE
 //
-//  /**
-//   * Returns the method object of the inspector of the property with
-//   * name <code>propertyName</code> of <code>beanClass</code>. If such a
-//   * property or such an inspector does not exist, an exception is thrown.
-//   * This method only finds implemented methods,
-//   * thus not methods in interfaces or abstract methods.
-//   *
-//   * @todo check that This method only finds implemented methods,
-//   * thus not methods in interfaces or abstract methods, and fix.
-//   *
-//   * @param     beanClass
-//   *            The bean class to get the property read method of
-//   * @param     propertyName
-//   *            The programmatic name of the property we want to read
-//   */
-//  @MethodContract(
-//    pre  = @Expression("beanClass != null"),
-//    post = {
-//      @Expression("result != null"),
-//      @Expression("getPropertyDescriptor(beanClass, propertyName).readMethod")
-//    },
-//    exc  = {
-//      @Throw(type = IntrospectionException.class, cond = @Expression(value = "true", description = "Cannot get the BeanInfo of <beanClass.")),
-//      @Throw(type = NoSuchMethodException.class, cond = @Expression(value = "getPropertyDescriptor(beanClass, propertyName).readMethod == null"))
-//    }
-//  )
-//  public static Method propertyReadMethod(final Class<?> beanClass, final String propertyName) {
-//    assert beanClass != null;
-//    Method inspector = simplePropertyDescriptor(beanClass, propertyName).getReadMethod();
-//        // this can be null for an read-protected property
-//    if (inspector == null) {
-//      throw new AssertionError("No read method for property " + propertyName);
-//    }
-//    return inspector;
-//  }
-//
+  /**
+   * Returns the method object of the inspector of the property with
+   * name <code>propertyName</code> of <code>beanClass</code>. If such a
+   * property or such an inspector does not exist, an exception is thrown.
+   * This method only finds implemented methods,
+   * thus not methods in interfaces or abstract methods.
+   *
+   * // TODO check that this method only finds implemented methods, thus not methods in interfaces or abstract methods, and fix.
+   *
+   * @param     beanClass
+   *            The bean class to get the property read method of
+   * @param     propertyName
+   *            The programmatic name of the property we want to read
+   */
+  /*
+  @MethodContract(
+    pre  = @Expression("beanClass != null"),
+    post = {
+      @Expression("result != null"),
+      @Expression("getPropertyDescriptor(beanClass, propertyName).readMethod")
+    },
+    exc  = {
+      @Throw(type = IntrospectionException.class, cond = @Expression(value = "true", description = "Cannot get the BeanInfo of <beanClass.")),
+      @Throw(type = NoSuchMethodException.class, cond = @Expression(value = "getPropertyDescriptor(beanClass, propertyName).readMethod == null"))
+    }
+  )
+  */
+  public static Method propertyReadMethod(final Class<?> beanClass, final String propertyName) {
+    assert beanClass != null;
+    Method inspector = simplePropertyDescriptor(beanClass, propertyName).getReadMethod();
+        // this can be null for an read-protected property
+    if (inspector == null) {
+      throw new AssertionError("No read method for property " + propertyName);
+    }
+    return inspector;
+  }
+
 //  /**
 //   * Check whether <code>beanClass</code> has a no-arguments getter for
 //   * <code>propertyName</code>. This method only finds implemented methods,
@@ -447,40 +452,34 @@ public final class PropertyHelpers {
 //    }
 //    return mutator;
 //  }
-//
-//  /**
-//   * The value of property {@code propertyName} of {@code bean}.
-//   */
-//  public static <_Value_> _Value_ propertyValue(final Object bean, final String propertyName) {
-//    Method inspector;
-//    inspector = propertyReadMethod(bean.getClass(), propertyName); // MUDO should use dynamic method; use method from PropertyUtils?
-//    assert inspector != null;
-//    try {
-//      @SuppressWarnings("unchecked") _Value_ result = (_Value_)inspector.invoke(bean);
-//      return result;
-//    }
-//    catch (IllegalArgumentException iaExc) {
-//      unexpectedException(iaExc, "there are no arguments, and the implicit argument is not null and of the correct type");
-//    }
-//    catch (NullPointerException npExc) {
-//      unexpectedException(npExc, "implicit argument is not null");
-//    }
-//    catch (IllegalAccessException iaExc) {
-//      unexpectedException(iaExc);
-//    }
-//    catch (InvocationTargetException itExc) {
-//      unexpectedException(itExc);
-//    }
-//    catch (ExceptionInInitializerError eiiErr) {
-//      unexpectedException(eiiErr);
-//    }
-//    catch (ClassCastException ccExc) {
-//      unexpectedException(ccExc, "retrieve value not of expected type");
-//    }
-//    return null;
-//  }
-//
-//
+
+  /**
+   * The value of property {@code propertyName} of {@code bean}.
+   */
+  public static <_Value_> _Value_ propertyValue(final Object bean, final String propertyName) {
+    Method inspector;
+    inspector = propertyReadMethod(bean.getClass(), propertyName); // MUDO should use dynamic method; use method from PropertyUtils?
+    assert inspector != null;
+    try {
+      @SuppressWarnings("unchecked") _Value_ result = (_Value_)inspector.invoke(bean);
+      return result;
+    }
+    catch (IllegalArgumentException iaExc) {
+      unexpectedException(iaExc, "there are no arguments, and the implicit argument is not null and of the correct type");
+    }
+    catch (NullPointerException npExc) {
+      unexpectedException(npExc, "implicit argument is not null");
+    }
+    catch (IllegalAccessException | InvocationTargetException | ExceptionInInitializerError iaExc) {
+      unexpectedException(iaExc);
+    }
+    catch (ClassCastException ccExc) {
+      unexpectedException(ccExc, "retrieve value not of expected type");
+    }
+    return null;
+  }
+
+
 //  /**
 //   * The value of property {@code propertyName} of {@code bean}.
 //   */

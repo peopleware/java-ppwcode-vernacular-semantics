@@ -16,16 +16,22 @@ limitations under the License.
 
 package org.ppwcode.vernacular.semantics.VII.util;
 
-
 import org.junit.Test;
-
-import java.util.*;
-
 import org.ppwcode.vernacular.semantics.VII.util.teststubs.CloneableStubClassA;
 import org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass;
 
+import java.beans.PropertyDescriptor;
+import java.util.*;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
+import static org.apache.commons.lang.ArrayUtils.contains;
+
+import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.ppwcode.vernacular.semantics.VII.util.PropertyHelpers.hasProperty;
+import static org.ppwcode.vernacular.semantics.VII.util.PropertyHelpers.simplePropertyDescriptor;
 
 
 @SuppressWarnings("WeakerAccess")
@@ -159,36 +165,36 @@ public class PropertyHelpersTest {
 //    String expected = dotIndex >= 0 ? npn.substring(dotIndex + 1, npn.length()) : EMPTY;
 //    assertEquals(expected, result);
 //  }
-//
-//  @Test
-//  public void testSimplePropertyDescriptor1() {
-//    Class<?> type = StubClass.class;
-//    for (String propertyName : EXISTING_PROPERTY_NAMES) {
-//      PropertyDescriptor result = simplePropertyDescriptor(type, propertyName);
-//      assertNotNull(result);
-//      assertTrue(contains(getPropertyDescriptors(type), result));
-//      assertEquals(propertyName, result.getName());
-//    }
-//  }
-//
-//  @Test
-//  public void testSimplePropertyDescriptor2() {
-//    Class<?> type = StubClass.class;
-//    for (String propertyName : NON_EXISTING_PROPERTY_NAMES) {
-//      boolean noException = false;
-//      try {
-//        simplePropertyDescriptor(type, propertyName);
-//        noException = true; // can't do fail() here: that throws an AssertionError
-//      }
-//      catch (AssertionError aErr) {
-//        // expected
-//      }
-//      if (noException) {
-//        fail();
-//      }
-//    }
-//  }
-//
+
+  @Test
+  public void testSimplePropertyDescriptor1() {
+    Class<?> type = StubClass.class;
+    for (String propertyName : EXISTING_PROPERTY_NAMES) {
+      PropertyDescriptor result = simplePropertyDescriptor(type, propertyName);
+      assertNotNull(result);
+      assertTrue(contains(getPropertyDescriptors(type), result));
+      assertEquals(propertyName, result.getName());
+    }
+  }
+
+  @Test
+  public void testSimplePropertyDescriptor2() {
+    Class<?> type = StubClass.class;
+    for (String propertyName : NON_EXISTING_PROPERTY_NAMES) {
+      boolean noException = false;
+      try {
+        simplePropertyDescriptor(type, propertyName);
+        noException = true; // can't do fail() here: that throws an AssertionError
+      }
+      catch (AssertionError aErr) {
+        // expected
+      }
+      if (noException) {
+        fail();
+      }
+    }
+  }
+
 //  public void testPropertyDescriptor(Class<?> type, String propertyName) {
 //    PropertyDescriptor result = propertyDescriptor(type, propertyName);
 //    PropertyDescriptor expected = propertyName.indexOf(".") >= 0 ?

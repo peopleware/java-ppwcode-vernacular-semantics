@@ -27,17 +27,17 @@
 
 <body>
 <p>API expressing the ppwcode Semantics Bean vernacular.</p>
-<p>{@link org.ppwcode.vernacular.semantics_I.bean.SemanticBean} is the basis of our vernacular.
+<p>{@link org.ppwcode.vernacular.semantics.VII.bean.SemanticBean} is the basis of our vernacular.
   It expresses that semantic beans should be used by reference, and that they should feature
   a {@link org.ppwcode.vernacular.semantics_I.bean.SemanticBean#toString()} method aimed
-  at debugging and logging. {@link org.ppwcode.vernacular.semantics_I.bean.AbstractSemanticBean}
+  at debugging and logging. {@link org.ppwcode.vernacular.semantics.VII.bean.AbstractSemanticBean}
   provides help in implementing these rules.</p>
-<p>{@link org.ppwcode.vernacular.semantics_I.bean.RousseauBean} introduces the notion of
+<p>{@link org.ppwcode.vernacular.semantics.VII.bean.RousseauBean} introduces the notion of
   <dfn>civilized</dfn> and <dfn>wild</dfn> state for semantic beans, making explicit the
   difference in state that is acceptable for naked Java objects, and the state that is acceptable
   when those Java objects truly represent a domain object. This depends on the vernacular for
-  semantic exceptions layed out in {@link org.ppwcode.vernacular.semantics_I.exception}.
-  {@link org.ppwcode.vernacular.semantics_I.bean.AbstractRousseauBean} provides help in implementing
+  semantic exceptions laid out in {@link org.ppwcode.vernacular.semantics.VII.exception}.
+  {@link org.ppwcode.vernacular.semantics.VII.bean.AbstractRousseauBean} provides help in implementing
   this contract.</p>
 </body>
 </html>
