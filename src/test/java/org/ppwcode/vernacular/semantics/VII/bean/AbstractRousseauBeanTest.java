@@ -17,17 +17,6 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.bean;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +24,15 @@ import org.ppwcode.vernacular.semantics.VII.bean.stubs.NumberOfProperties;
 import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
 import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
 
+import java.util.*;
 
+import static org.junit.Assert.*;
+
+
+@SuppressWarnings({"UnusedParameters", "WeakerAccess"})
 public class AbstractRousseauBeanTest {
 
+  @SuppressWarnings({"WeakerAccess", "unused"})
   public static class AbstractRousseauBeanSTUB extends AbstractRousseauBean implements NumberOfProperties {
 
     public AbstractRousseauBeanSTUB(String property1, Date property2, Set<String> property3, int[] property4) {
@@ -119,6 +114,7 @@ public class AbstractRousseauBeanTest {
 
   }
 
+  @SuppressWarnings("unused")
   public static class AbstractRousseauBeanNOPROPERTIES extends AbstractRousseauBean implements NumberOfProperties {
 
     public int nrOfProperties() {
@@ -136,10 +132,10 @@ public class AbstractRousseauBeanTest {
 
   @Before
   public void setUp() throws Exception {
-    subjects = new ArrayList<AbstractRousseauBean>();
+    subjects = new ArrayList<>();
     AbstractRousseauBeanSTUB subject = new AbstractRousseauBeanSTUB(null, null, null, null);
     subjects.add(subject);
-    Set<String> stringSet = new HashSet<String>();
+    Set<String> stringSet = new HashSet<>();
     stringSet.add("string 1");
     stringSet.add("string 2");
     stringSet.add(null);
@@ -183,7 +179,7 @@ public class AbstractRousseauBeanTest {
       testEquals(subject, null);
       testEquals(subject, subject);
       testEquals(subject, new Object());
-      testEquals(subject, new AbstractRousseauBeanSTUB("hfhfh", null, null, null));
+      testEquals(subject, new AbstractRousseauBeanSTUB("An ARB stub string", null, null, null));
     }
   }
 
@@ -197,9 +193,7 @@ public class AbstractRousseauBeanTest {
 
   @Test
   public void testHashCode() {
-    for (AbstractRousseauBean subject : subjects) {
-      testHashCode(subject);
-    }
+    subjects.forEach(AbstractRousseauBeanTest::testHashCode);
   }
 
   public static void testToString(AbstractRousseauBean subject) {
@@ -212,9 +206,7 @@ public class AbstractRousseauBeanTest {
 
   @Test
   public void testToString() {
-    for (AbstractRousseauBean subject : subjects) {
-      testToString(subject);
-    }
+    subjects.forEach(AbstractRousseauBeanTest::testToString);
   }
 
   @Test
@@ -227,47 +219,6 @@ public class AbstractRousseauBeanTest {
       catch (CloneNotSupportedException cnsExc) {
         assertInvariants(subject);
       }
-    }
-  }
-
-  public static Set<String> testPropertyNamesForToStringA(AbstractRousseauBean subject) {
-    Set<String> result = AbstractSemanticBeanTest.testPropertyNamesForToStringA(subject);
-    assertFalse(result.contains("wildExceptions"));
-    assertFalse(result.contains("civilized"));
-    assertInvariants(subject);
-    return result;
-  }
-
-  public static Set<String> testPropertyNamesForToStringB(AbstractRousseauBean subject) {
-    Set<String> result = AbstractSemanticBeanTest.testPropertyNamesForToStringB(subject);
-    assertFalse(result.contains("wildExceptions"));
-    assertFalse(result.contains("civilized"));
-    assertInvariants(subject);
-    return result;
-  }
-
-  @Test
-  public void testPropertyNamesForToString2() {
-    AbstractRousseauBean subject = new AbstractRousseauBeanNOPROPERTIES();
-    testPropertyNamesForToStringA(subject);
-  }
-
-  @Test
-  public void testPropertyNamesForToString1() {
-    for (AbstractRousseauBean subject : subjects) {
-      testPropertyNamesForToStringB(subject); // 2
-    }
-  }
-
-  public static void testCollectionString(AbstractRousseauBean subject) {
-    AbstractSemanticBeanTest.testCollectionString(subject);
-    assertInvariants(subject);
-  }
-
-  @Test
-  public void testCollectionString() {
-    for (AbstractRousseauBean subject : subjects) {
-      testCollectionString(subject);
     }
   }
 
@@ -305,28 +256,24 @@ public class AbstractRousseauBeanTest {
 
   @Test
   public void testIsCivilized() {
-    for (AbstractRousseauBean subject : subjects) {
-      testIsCivilized(subject);
-    }
+    subjects.forEach(AbstractRousseauBeanTest::testIsCivilized);
   }
 
   public static void testCheckCivility(AbstractRousseauBean subject) {
-    boolean OLDcivilized = subject.civilized();
+    boolean OLDCivilized = subject.civilized();
     try {
       subject.checkCivility();
-      RousseauBeanContract.contractPostCheckCivility(OLDcivilized, subject);
+      RousseauBeanContract.contractPostCheckCivility(OLDCivilized, subject);
     }
     catch (CompoundPropertyException thrown) {
-      RousseauBeanContract.contractExcCheckCivility(OLDcivilized, subject, thrown);
+      RousseauBeanContract.contractExcCheckCivility(OLDCivilized, subject, thrown);
     }
     assertInvariants(subject);
   }
 
   @Test
   public void testCheckCivility() {
-    for (AbstractRousseauBean subject : subjects) {
-      testCheckCivility(subject);
-    }
+    subjects.forEach(AbstractRousseauBeanTest::testCheckCivility);
   }
 
   public static void testNormalize(AbstractRousseauBean subject) {
@@ -338,9 +285,7 @@ public class AbstractRousseauBeanTest {
 
   @Test
   public void testNormalize() {
-    for (AbstractRousseauBean subject : subjects) {
-      testNormalize(subject);
-    }
+    subjects.forEach(AbstractRousseauBeanTest::testNormalize);
   }
 
 }

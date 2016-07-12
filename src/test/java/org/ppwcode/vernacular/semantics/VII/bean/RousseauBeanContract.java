@@ -22,11 +22,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.ppwcode.vernacular.exception_III.ApplicationException.DEFAULT_MESSAGE_KEY;
+import static org.ppwcode.vernacular.exception.IV.ApplicationException.DEFAULT_MESSAGE_KEY;
 
 import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
 
 
+@SuppressWarnings({"WeakerAccess", "UnusedParameters", "unused"})
 public class RousseauBeanContract {
 
   // interface, not actual tests, only contract
@@ -58,6 +59,7 @@ public class RousseauBeanContract {
   }
 
   public static void contractIsCivilized(RousseauBean subject, boolean result) {
+    //noinspection ThrowableResultOfMethodCallIgnored
     assertEquals(subject.wildExceptions().isEmpty(), result);
   }
 

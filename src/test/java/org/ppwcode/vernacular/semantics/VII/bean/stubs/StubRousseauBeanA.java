@@ -20,6 +20,7 @@ import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
 import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
 
 
+@SuppressWarnings("unused")
 public class StubRousseauBeanA extends StubRousseauBean {
 
   private StubRousseauBean $property6;

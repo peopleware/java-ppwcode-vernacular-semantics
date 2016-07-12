@@ -1,5 +1,5 @@
 /*<license>
-Copyright 2004 - $Date: 2008-11-16 15:00:33 +0100 (Sun, 16 Nov 2008) $ by PeopleWare n.v..
+Copyright 2004 - 2016 by PeopleWare n.v..
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,9 +17,10 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.util.teststubs;
 
 
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.unexpectedException;
+import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.unexpectedException;
 
 
+@SuppressWarnings("unused")
 public class CloneableStubClassA implements Cloneable {
 
   public CloneableStubClassA() {

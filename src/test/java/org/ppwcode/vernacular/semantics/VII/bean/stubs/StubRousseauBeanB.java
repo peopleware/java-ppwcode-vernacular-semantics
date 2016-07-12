@@ -17,6 +17,7 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.bean.stubs;
 
 
+@SuppressWarnings("unused")
 public class StubRousseauBeanB extends StubRousseauBean {
 
   private StubRousseauBeanA $property8;

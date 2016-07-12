@@ -25,6 +25,7 @@ import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
 import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
 
 
+@SuppressWarnings({"ThrowableInstanceNeverThrown", "unused"})
 public class StubRousseauBean extends AbstractRousseauBean implements NumberOfProperties {
 
   @Override
@@ -59,7 +60,7 @@ public class StubRousseauBean extends AbstractRousseauBean implements NumberOfPr
 
   private StubRousseauBeanB $property5;
 
-  private Set<StubRousseauBeanA> $propertyA = new HashSet<StubRousseauBeanA>();
+  private Set<StubRousseauBeanA> $propertyA = new HashSet<>();
 
 
   public final String getProperty1() {

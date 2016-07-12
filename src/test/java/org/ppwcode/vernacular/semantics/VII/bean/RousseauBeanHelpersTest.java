@@ -17,20 +17,14 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.bean;
 
 
-import static org.apache.commons.beanutils.PropertyUtils.getProperty;
-import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.preArgumentNotNull;
-import static org.ppwcode.util.exception_III.ProgrammingErrorHelpers.unexpectedException;
-import static org.ppwcode.util.reflect_I.PropertyHelpers.propertyValue;
-import static org.ppwcode.vernacular.semantics.VII.bean.RousseauBeanHelpers.directUpstreamRousseauBeans;
-import static org.ppwcode.vernacular.semantics.VII.bean.RousseauBeanHelpers.normalize;
-import static org.ppwcode.vernacular.semantics.VII.bean.RousseauBeanHelpers.normalizeAndCheckCivilityOnUpstreamRousseauBeans;
-import static org.ppwcode.vernacular.semantics.VII.bean.RousseauBeanHelpers.upstreamRousseauBeans;
-import static org.ppwcode.vernacular.semantics.VII.bean.RousseauBeanHelpers.wildExceptions;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.ppwcode.vernacular.exception.IV.CompoundSemanticException;
+import org.ppwcode.vernacular.semantics.VII.bean.stubs.StubRousseauBean;
+import org.ppwcode.vernacular.semantics.VII.bean.stubs.StubRousseauBeanA;
+import org.ppwcode.vernacular.semantics.VII.bean.stubs.StubRousseauBeanB;
+import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -38,19 +32,18 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.ppwcode.vernacular.exception_III.CompoundSemanticException;
-import org.ppwcode.vernacular.semantics.VII.bean.stubs.StubRousseauBean;
-import org.ppwcode.vernacular.semantics.VII.bean.stubs.StubRousseauBeanA;
-import org.ppwcode.vernacular.semantics.VII.bean.stubs.StubRousseauBeanB;
-import org.ppwcode.vernacular.semantics.VII.exception.PropertyException;
-import org.toryt.annotations_I.Expression;
-import org.toryt.annotations_I.MethodContract;
+import static org.apache.commons.beanutils.PropertyUtils.getProperty;
+import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
+import static org.junit.Assert.*;
+import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.preArgumentNotNull;
+import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.unexpectedException;
+import static org.ppwcode.vernacular.semantics.VII.bean.RousseauBeanHelpers.*;
+import static org.ppwcode.vernacular.semantics.VII.util.PropertyHelpers.propertyValue;
 
 
+@SuppressWarnings({"UnnecessaryLocalVariable", "ConstantConditions", "WeakerAccess"})
 public class RousseauBeanHelpersTest {
 
   private Set<? extends RousseauBean> $rousseauBeans;
@@ -62,7 +55,7 @@ public class RousseauBeanHelpersTest {
   }
 
   public static Set<StubRousseauBean> someRousseauBeans() {
-    Set<StubRousseauBean> rousseauBeans = new HashSet<StubRousseauBean>();
+    Set<StubRousseauBean> rousseauBeans = new HashSet<>();
 
     StubRousseauBean srb = new StubRousseauBean();
     rousseauBeans.add(srb);
@@ -117,6 +110,7 @@ public class RousseauBeanHelpersTest {
     assertNotNull(result);
     for (PropertyDescriptor pd : getPropertyDescriptors(rb)) {
       if (RousseauBean.class.isAssignableFrom(pd.getPropertyType()) && propertyValue(rb, pd.getName()) != null) {
+        //noinspection SuspiciousMethodCalls
         assertTrue(result.contains(propertyValue(rb, pd.getName())));
       }
     }
@@ -136,15 +130,13 @@ public class RousseauBeanHelpersTest {
 
   @Test
   public void testDirectUpstreamRousseauBeans() {
-    for (RousseauBean rb : $rousseauBeans) {
-      testDirectUpstreamRousseauBeans(rb);
-    }
+    $rousseauBeans.forEach(this::testDirectUpstreamRousseauBeans);
   }
 
   public void testUpstreamRousseauBeans(RousseauBean rb) {
     Set<RousseauBean> result = upstreamRousseauBeans(rb);
     assertNotNull(result);
-    Set<RousseauBean> expected = new HashSet<RousseauBean>();
+    Set<RousseauBean> expected = new HashSet<>();
     expected.add(rb);
     Set<RousseauBean> duRbs = directUpstreamRousseauBeans(rb);
     expected.addAll(duRbs);
@@ -156,15 +148,13 @@ public class RousseauBeanHelpersTest {
 
   @Test
   public void testUpstreamRousseauBeans() {
-    for (RousseauBean rb : $rousseauBeans) {
-      testUpstreamRousseauBeans(rb);
-    }
+    $rousseauBeans.forEach(this::testUpstreamRousseauBeans);
   }
 
   public void testNormalizeAndCheckCivilityOnUpstreamRousseauBeans(RousseauBean rb) {
     CompoundSemanticException result = normalizeAndCheckCivilityOnUpstreamRousseauBeans(rb);
     assertNotNull(result);
-    Set<PropertyException> expected = new HashSet<PropertyException>();
+    Set<PropertyException> expected = new HashSet<>();
     for (RousseauBean rbr : upstreamRousseauBeans(rb)) {
       assertTrue(((StubRousseauBean)rbr).normalized);
       expected.addAll(((StubRousseauBean)rbr).wildExceptions.getElementExceptions());
@@ -174,9 +164,7 @@ public class RousseauBeanHelpersTest {
 
   @Test
   public void testNormalizeAndCheckCivilityOnUpstreamRousseauBeans() {
-    for (RousseauBean rb : $rousseauBeans) {
-      testNormalizeAndCheckCivilityOnUpstreamRousseauBeans(rb);
-    }
+    $rousseauBeans.forEach(this::testNormalizeAndCheckCivilityOnUpstreamRousseauBeans);
   }
 
   public void testNormalize(Set<? extends RousseauBean> rbs) {
@@ -196,7 +184,7 @@ public class RousseauBeanHelpersTest {
   public void testWildExceptions(Set<? extends RousseauBean> rbs) {
     CompoundSemanticException result = wildExceptions(rbs);
     assertNotNull(result);
-    Set<PropertyException> expected = new HashSet<PropertyException>();
+    Set<PropertyException> expected = new HashSet<>();
     for (RousseauBean rb : rbs) {
       expected.addAll(((StubRousseauBean)rb).wildExceptions.getElementExceptions());
     }
@@ -210,47 +198,6 @@ public class RousseauBeanHelpersTest {
     }
   }
 
-
-//  @Test
-//  public void tt() {
-//    PropertyDescriptor pd = PropertyHelpers.propertyDescriptor(StubRousseauBeanA.class, "propertyA");
-//    System.out.println(pd);
-//    System.out.println(pd.getPropertyType());
-//    System.out.println(pd.getPropertyType().getTypeParameters());
-//    System.out.println(pd.getPropertyType().getTypeParameters().length);
-//    System.out.println(pd.getPropertyType().getTypeParameters()[0]);
-//    System.out.println(pd.getPropertyType().getTypeParameters()[0].getName());
-//    System.out.println(pd.getPropertyType().getTypeParameters()[0].getGenericDeclaration());
-//    System.out.println(pd.getPropertyType().getTypeParameters()[0].getBounds());
-//    System.out.println(pd.getPropertyType().getTypeParameters()[0].getBounds().length);
-//    System.out.println(pd.getPropertyType().getTypeParameters()[0].getBounds()[0]);
-//
-//    System.out.println();
-//
-//    StubRousseauBean srb = new StubRousseauBean();
-//    for (int i = 0; i < 5; i++) {
-//      StubRousseauBeanA srbAQ = new StubRousseauBeanA();
-//      srbAQ.setProperty6(srb);
-//      StubRousseauBeanB srbBQ = new StubRousseauBeanB();
-//      srbBQ.setProperty2(srb);
-//      srbBQ.setProperty8(srbAQ);
-//      srbAQ.setProperty5(srbBQ);
-//      srb.addPropertyA(srbAQ);
-//    }
-//    System.out.println(srb.getPropertyA());
-//    System.out.println(srb.getPropertyA().getClass());
-//    System.out.println(srb.getPropertyA().getClass().getGenericInterfaces());
-//    System.out.println(srb.getPropertyA().getClass().getGenericInterfaces().length);
-//    for (int i = 0; i < srb.getPropertyA().getClass().getGenericInterfaces().length; i++) {
-//      System.out.println(srb.getPropertyA().getClass().getGenericInterfaces()[i]);
-//    }
-//    System.out.println(srb.getPropertyA().getClass().getGenericSuperclass());
-//    System.out.println(srb.getPropertyA().getClass().getTypeParameters());
-//    System.out.println(srb.getPropertyA().getClass().getTypeParameters().length);
-//    System.out.println(srb.getPropertyA().getClass().getTypeParameters()[0]);
-//  }
-
-
   /*
    * code below comes from ppwcode-util-reflection org.ppwcode.util.reflect_I.AssociationHelpers
    * r3064
@@ -262,6 +209,7 @@ public class RousseauBeanHelpersTest {
    * These are the beans that are properties of {@code bean}, directly (to-one) or via
    * a collection (to-many).
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_bean != null"),
@@ -280,49 +228,40 @@ public class RousseauBeanHelpersTest {
                   "}") // MUDO add toMany
     }
   )
+  */
   private static Set<RousseauBean> directAssociatedRousseauBeans(RousseauBean bean) {
     assert preArgumentNotNull(bean, "bean");
-    Set<RousseauBean> result = new HashSet<RousseauBean>();
+    Set<RousseauBean> result = new HashSet<>();
     PropertyDescriptor[] pds = getPropertyDescriptors(bean);
-    for (int i = 0; i < pds.length; i++) {
-      PropertyDescriptor pd = pds[i];
+    for (PropertyDescriptor pd : pds) {
       if (RousseauBean.class.isAssignableFrom(pd.getPropertyType())) {
         RousseauBean candidate = propertyValue(bean, pd.getName(), RousseauBean.class);
         if (candidate != null) {
           result.add(candidate);
         }
-      }
-      else if (Collection.class.isAssignableFrom(pd.getPropertyType())) {
+      } else if (Collection.class.isAssignableFrom(pd.getPropertyType())) {
         // get the elements, and if they are RousseauBeans, add them
-        Set<? extends Object> many = null;
+        Set<?> many = null;
         try {
           @SuppressWarnings("unchecked")
-          Set<? extends Object> anyMany = (Set<? extends Object>)getProperty(bean, pd.getName());
+          Set<?> anyMany = (Set<?>) getProperty(bean, pd.getName());
           many = anyMany;
-        }
-        catch (InvocationTargetException exc) {
+        } catch (InvocationTargetException exc) {
           /* in a special case, to avoid problems with deserialized objects of a non-initialized
              JPA toMany, we deal with a NullPointerException as if it is a null property */
           if (exc.getCause() instanceof NullPointerException) {
             assert many == null;
             // NOP
-          }
-          else {
+          } else {
             unexpectedException(exc);
           }
-        }
-        catch (IllegalAccessException exc) {
-          unexpectedException(exc);
-        }
-        catch (NoSuchMethodException exc) {
+        } catch (IllegalAccessException | NoSuchMethodException exc) {
           unexpectedException(exc);
         }
         if (many != null) {
-          for (Object object : many) {
-            if (object != null && object instanceof RousseauBean) {
-              result.add((RousseauBean)object);
-            }
-          }
+          result.addAll(many.stream().filter(object
+                  -> object != null && object instanceof RousseauBean).map(object
+                  -> (RousseauBean) object).collect(Collectors.toList()));
         }
       }
     }
@@ -334,6 +273,7 @@ public class RousseauBeanHelpersTest {
    * These are the beans that are simple or multiple properties of {@code bean}. This is applied
    * recursively. {@code bean} itself is also part of the set.
    */
+  /*
   @MethodContract(
     pre  = {
       @Expression("_bean != null"),
@@ -345,21 +285,18 @@ public class RousseauBeanHelpersTest {
                    "union (_T_ t : directAssociatedRousseauBeans(_bean)) {associatedRousseauBeans(t)}")
     }
   )
+  */
   private static Set<RousseauBean> associatedRousseauBeans(RousseauBean bean) {
     assert preArgumentNotNull(bean, "bean");
-    LinkedList<RousseauBean> agenda = new LinkedList<RousseauBean>();
+    LinkedList<RousseauBean> agenda = new LinkedList<>();
     agenda.add(bean);
     int i = 0;
     while (i < agenda.size()) {
       RousseauBean current = agenda.get(i);
-      for (RousseauBean t : directAssociatedRousseauBeans(current)) {
-        if (! agenda.contains(t)) {
-          agenda.add(t);
-        }
-      }
+      directAssociatedRousseauBeans(current).stream().filter(t -> !agenda.contains(t)).forEach(agenda::add);
       i++;
     }
-    return new HashSet<RousseauBean>(agenda);
+    return new HashSet<>(agenda);
   }
 
 

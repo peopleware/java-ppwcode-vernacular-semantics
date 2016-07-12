@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 
+@SuppressWarnings({"WeakerAccess", "UnusedParameters"})
 public class SemanticBeanContract {
 
   // interface, not actual tests, only contract

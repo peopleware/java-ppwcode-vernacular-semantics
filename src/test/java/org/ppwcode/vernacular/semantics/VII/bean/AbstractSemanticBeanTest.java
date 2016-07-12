@@ -17,25 +17,20 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.bean;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.ppwcode.vernacular.semantics.VII.bean.stubs.NumberOfProperties;
 
+import java.util.*;
 
+import static org.junit.Assert.fail;
+
+
+@SuppressWarnings("WeakerAccess")
 public class AbstractSemanticBeanTest {
 
+  @SuppressWarnings("unused")
   public static class AbstractSemanticBeanSTUB extends AbstractSemanticBean implements NumberOfProperties {
 
     public AbstractSemanticBeanSTUB(String property1, Date property2, Set<String> property3, int[] property4) {
@@ -97,6 +92,7 @@ public class AbstractSemanticBeanTest {
 
   }
 
+  @SuppressWarnings("unused")
   public static class AbstractSemanticBeanNOPROPERTIES extends AbstractSemanticBean implements NumberOfProperties {
 
     public int nrOfProperties() {
@@ -114,10 +110,10 @@ public class AbstractSemanticBeanTest {
 
   @Before
   public void setUp() throws Exception {
-    subjects = new ArrayList<AbstractSemanticBean>();
+    subjects = new ArrayList<>();
     AbstractSemanticBeanSTUB subject = new AbstractSemanticBeanSTUB(null, null, null, null);
     subjects.add(subject);
-    Set<String> stringSet = new HashSet<String>();
+    Set<String> stringSet = new HashSet<>();
     stringSet.add("string 1");
     stringSet.add("string 2");
     stringSet.add(null);
@@ -159,7 +155,7 @@ public class AbstractSemanticBeanTest {
       testEquals(subject, null);
       testEquals(subject, subject);
       testEquals(subject, new Object());
-      testEquals(subject, new AbstractSemanticBeanSTUB("hfhfh", null, null, null));
+      testEquals(subject, new AbstractSemanticBeanSTUB("a asb stub string", null, null, null));
     }
   }
 
@@ -173,9 +169,7 @@ public class AbstractSemanticBeanTest {
 
   @Test
   public void testHashCode() {
-    for (AbstractSemanticBean subject : subjects) {
-      testHashCode(subject);
-    }
+    subjects.forEach(AbstractSemanticBeanTest::testHashCode);
   }
 
   public static void testToString(AbstractSemanticBean subject) {
@@ -189,9 +183,7 @@ public class AbstractSemanticBeanTest {
 
   @Test
   public void testToString() {
-    for (AbstractSemanticBean subject : subjects) {
-      testToString(subject);
-    }
+    subjects.forEach(AbstractSemanticBeanTest::testToString);
   }
 
   @Test
@@ -205,46 +197,6 @@ public class AbstractSemanticBeanTest {
         // expected
         assertInvariants(subject);
       }
-    }
-  }
-
-  public static Set<String> testPropertyNamesForToStringA(AbstractSemanticBean subject) {
-    Set<String> result = subject.propertyNamesForToString();
-    assertNotNull(result);
-//    System.out.println(subject.getClass().getCanonicalName());
-    assertEquals(((NumberOfProperties)subject).nrOfSimpleProperties(), result.size());
-    assertInvariants(subject);
-    return result;
-  }
-
-  public static Set<String> testPropertyNamesForToStringB(AbstractSemanticBean subject) {
-    Set<String> result = testPropertyNamesForToStringA(subject);
-    assertTrue(result.contains("property1"));
-    assertTrue(result.contains("property2"));
-    return result;
-  }
-
-  @Test
-  public void testPropertyNamesForToString2() {
-    AbstractSemanticBean subject = new AbstractSemanticBeanNOPROPERTIES();
-    testPropertyNamesForToStringA(subject);
-  }
-
-  @Test
-  public void testPropertyNamesForToString1() {
-    for (AbstractSemanticBean subject : subjects) {
-      testPropertyNamesForToStringB(subject);
-    }
-  }
-
-  public static void testCollectionString(AbstractSemanticBean subject) {
-    assertInvariants(subject);
-  }
-
-  @Test
-  public void testCollectionString() {
-    for (AbstractSemanticBean subject : subjects) {
-      testCollectionString(subject);
     }
   }
 

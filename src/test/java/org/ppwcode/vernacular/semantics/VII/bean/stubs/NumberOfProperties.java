@@ -10,6 +10,7 @@ import org.ppwcode.vernacular.semantics.VII.bean.SemanticBean;
 
 
 
+@SuppressWarnings("unused")
 public interface NumberOfProperties extends SemanticBean {
 
   int nrOfProperties();
