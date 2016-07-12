@@ -16,7 +16,6 @@ limitations under the License.
 
 package org.ppwcode.vernacular.semantics.VII.exception;
 
-
 import org.ppwcode.vernacular.exception.IV.ApplicationException;
 import org.ppwcode.vernacular.exception.IV.SemanticException;
 
@@ -39,6 +38,7 @@ import static org.ppwcode.vernacular.semantics.VII.util.PropertyHelpers.hasPrope
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
+@SuppressWarnings("WeakerAccess")
 public class PropertyException extends SemanticException {
 
   /*<construction>*/

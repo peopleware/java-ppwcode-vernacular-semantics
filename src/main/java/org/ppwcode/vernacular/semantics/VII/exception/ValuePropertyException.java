@@ -18,11 +18,11 @@ package org.ppwcode.vernacular.semantics.VII.exception;
 
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.ppwcode.vernacular.exception_III.ApplicationException;
+import org.ppwcode.vernacular.exception.IV.ApplicationException;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static org.ppwcode.util.reflect_I.CloneHelpers.safeReference;
+import static org.ppwcode.vernacular.semantics.VII.util.CloneHelpers.safeReference;
 
 
 /**
@@ -51,6 +51,7 @@ import static org.ppwcode.util.reflect_I.CloneHelpers.safeReference;
   @Expression("originType != null")
 })
 */
+@SuppressWarnings("WeakerAccess")
 public class ValuePropertyException extends PropertyException {
 
   /*<construction>*/
