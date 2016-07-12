@@ -465,7 +465,7 @@ public class TypeHelpersTest {
 
   @Test
   public void testType12() {
-    String fqtn = "org.ppwcode.util.reflect_I.ConstantHelpers";
+    String fqtn = "org.ppwcode.vernacular.semantics.VII.util.ConstantHelpers";
     Class<?> result = type(fqtn);
     assertEquals(ConstantHelpers.class, result);
     testType(fqtn, result);
@@ -476,7 +476,7 @@ public class TypeHelpersTest {
    */
   @Test(expected = AssertionError.class)
   public void testType13() {
-    type("org.ppwcode.util.reflect_I.ConstantHelpers ");
+    type("org.ppwcode.vernacular.semantics.VII.util.ConstantHelpers ");
   }
 
   /**
@@ -484,22 +484,22 @@ public class TypeHelpersTest {
    */
   @Test(expected = AssertionError.class)
   public void testType14() {
-    type("org.ppwcode.util.reflect_I. ConstantHelpers");
+    type("org.ppwcode.vernacular.semantics.VII.util. ConstantHelpers");
   }
 
   @Test(expected = AssertionError.class)
   public void testType15() {
-    type("org.ppwcode.util.reflect_I.Deflection");
+    type("org.ppwcode.vernacular.semantics.VII.util.Deflection");
   }
 
   @Test(expected = AssertionError.class)
   public void testType16() {
-    type("org.ppwcode.util.reflect_I.String");
+    type("org.ppwcode.vernacular.semantics.VII.util.String");
   }
 
   @Test
   public void testType17() {
-    String fqtn = "org.ppwcode.util.reflect_I.ConstantHelpersTest";
+    String fqtn = "org.ppwcode.vernacular.semantics.VII.util.ConstantHelpersTest";
     Class<?> result = type(fqtn);
     assertEquals(ConstantHelpersTest.class, result);
     testType(fqtn, result);
