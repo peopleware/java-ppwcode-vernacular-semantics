@@ -34,8 +34,6 @@ import java.util.Set;
  * @author    nsmeets
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
- *
- * @mudo unit test
  */
 public abstract class AbstractRousseauBean extends AbstractSemanticBean implements RousseauBean {
 
@@ -45,7 +43,7 @@ public abstract class AbstractRousseauBean extends AbstractSemanticBean implemen
    * {@inheritDoc}
    *
    * @protected
-   * <p><em>The implementation in this class returns an emtpy
+   * <p><em>The implementation in this class returns an empty
    *   CompoundPropertyException.</em> Subclasses should override this method
    *   with the following idiom:</p>
    * <pre>
@@ -84,6 +82,7 @@ public abstract class AbstractRousseauBean extends AbstractSemanticBean implemen
   /**
    * {@inheritDoc}
    */
+  @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
   public final boolean civilized() {
     return wildExceptions().isEmpty();
   }
@@ -109,8 +108,8 @@ public abstract class AbstractRousseauBean extends AbstractSemanticBean implemen
           else {
             LOG.debug(key + ":");
           }
-          for (PropertyException pexc : entry.getValue()) {
-            LOG.debug(pexc, pexc);
+          for (PropertyException propertyException : entry.getValue()) {
+            LOG.debug(propertyException, propertyException);
           }
         }
       }
