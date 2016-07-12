@@ -246,12 +246,12 @@ public class MethodHelpersTest {
 
   @Test(expected = NoSuchMethodException.class)
   public void testMethodHelper3() throws NoSuchMethodException {
-    methodHelper(StubClass.class, "stubMethod(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
+    methodHelper(StubClass.class, "stubMethod(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
   }
 
   @Test(expected = NoSuchMethodException.class)
   public void testMethodHelper4() throws NoSuchMethodException {
-    methodHelper(StubClass.class, "stubStaticMethod(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
+    methodHelper(StubClass.class, "stubStaticMethod(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
   }
 
   @Test(expected = NoSuchMethodException.class)
@@ -471,12 +471,12 @@ public class MethodHelpersTest {
 
   @Test(expected = AssertionError.class)
   public void testMethodClassOfQString3() {
-    method(StubClass.class, "stubMethod(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
+    method(StubClass.class, "stubMethod(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
   }
 
   @Test(expected = AssertionError.class)
   public void testMethodClassOfQString4() {
-    method(StubClass.class, "stubStaticMethod(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
+    method(StubClass.class, "stubStaticMethod(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
   }
 
   @Test(expected = AssertionError.class)
@@ -539,8 +539,8 @@ public class MethodHelpersTest {
 ////    testHasMethodClassOfQString(StubClass.class, "stubStaticMethod(Object[])");
 //    // methods that don't exist
 //    testHasMethodClassOfQString(StubClass.class, "methodDoesNotExist()");
-//    testHasMethodClassOfQString(StubClass.class, "stubMethod(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
-//    testHasMethodClassOfQString(StubClass.class, "stubStaticMethod(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
+//    testHasMethodClassOfQString(StubClass.class, "stubMethod(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
+//    testHasMethodClassOfQString(StubClass.class, "stubStaticMethod(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
 //    testHasMethodClassOfQString(StubClass.class, "StubClass(Object, Object, float)");
 //    // inherited
 //    testHasMethodClassOfQString(StubClass.class, "toString()");
@@ -613,8 +613,8 @@ public class MethodHelpersTest {
 //    testHasPublicMethodClassOfQString(StubClass.class, "stubStaticMethod(Object[])");
     // methods that don't exist
     testHasPublicMethodClassOfQString(StubClass.class, "methodDoesNotExist()");
-    testHasPublicMethodClassOfQString(StubClass.class, "stubMethod(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
-    testHasPublicMethodClassOfQString(StubClass.class, "stubStaticMethod(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
+    testHasPublicMethodClassOfQString(StubClass.class, "stubMethod(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
+    testHasPublicMethodClassOfQString(StubClass.class, "stubStaticMethod(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
     testHasPublicMethodClassOfQString(StubClass.class, "StubClass(Object, Object, float)");
     // inherited
     testHasPublicMethodClassOfQString(StubClass.class, "toString()");
@@ -654,7 +654,7 @@ public class MethodHelpersTest {
 //    testConstructor(StubClass.class, "StubClass(String)");
 //    testConstructor(StubClass.class, "StubClass(int)");
 //    testConstructor(StubClass.class, "StubClass(Class)");
-//    testConstructor(StubClass.class, "StubClass(org.ppwcode.vernacular.semantics.VII.util.StubClass)");
+//    testConstructor(StubClass.class, "StubClass(org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass)");
 //    testConstructor(StubClass.class, "StubClass(int, boolean, Object, String)");
 //    testConstructor(StubClass.class, "StubClass(int,boolean,    Object, " +
 //        "     String)");
@@ -693,7 +693,7 @@ public class MethodHelpersTest {
 //    testConstructorParameterTypes(StubClass.class, String.class);
 //    testConstructorParameterTypes(StubClass.class, Integer.TYPE);
 //    testConstructorParameterTypes(StubClass.class, Class.class);
-//    testConstructorParameterTypes(StubClass.class, org.ppwcode.vernacular.semantics.VII.util.StubClass.class);
+//    testConstructorParameterTypes(StubClass.class, org.ppwcode.vernacular.semantics.VII.util.teststubs.StubClass.class);
 //    testConstructorParameterTypes(StubClass.class, Integer.TYPE, Boolean.TYPE, Object.class, String.class);
 //    testConstructorParameterTypes(StubClass.class, Object.class, Object.class, Float.TYPE);
 //    testConstructorParameterTypes(StubClass.class, Serializable.class, Serializable.class, Float.TYPE);
