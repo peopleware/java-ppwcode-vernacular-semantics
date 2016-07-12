@@ -42,7 +42,7 @@ public abstract class AbstractRousseauBean extends AbstractSemanticBean implemen
   /**
    * {@inheritDoc}
    *
-   * @protected
+   * <h3>Information for subtype implementors:</h3>
    * <p><em>The implementation in this class returns an empty
    *   CompoundPropertyException.</em> Subclasses should override this method
    *   with the following idiom:</p>
@@ -121,9 +121,9 @@ public abstract class AbstractRousseauBean extends AbstractSemanticBean implemen
   /**
    * {@inheritDoc}
    *
-   * @protected
-   * The implementation of this method in this class does NOP,
-   * as a convenience to most subtypes.
+   * <h3>Information for subtype implementors:</h3>
+   * <p>The implementation of this method in this class does NOP,
+   * as a convenience to most subtypes.</p>
    */
   public void normalize() {
     // NOP

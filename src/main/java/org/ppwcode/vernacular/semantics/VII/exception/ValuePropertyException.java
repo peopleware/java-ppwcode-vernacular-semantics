@@ -27,8 +27,8 @@ import static org.ppwcode.vernacular.semantics.VII.util.CloneHelpers.safeReferen
 
 /**
  * <p>In many cases, a property exception is needed that reports the original value of the property.
- *   This value can be used to generate sensible end-user messages of the form <q>Unable to change
- *   {propertyName} for {origin} from {propertyValue}</q>.</p>
+ *   This value can be used to generate sensible end-user messages of the form <em>Unable to change
+ *   {propertyName} for {origin} from {propertyValue}</em>.</p>
  * <p>This exception is a generalized version of a {@link PropertyException} that carries that
  *   information. It is a bore to create separate exceptions for each of those specific cases. It would
  *   be nice to use generics for the type of the property value, but generics are not possible for

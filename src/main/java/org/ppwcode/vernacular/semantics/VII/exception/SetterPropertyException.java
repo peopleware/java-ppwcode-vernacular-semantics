@@ -25,7 +25,7 @@ import static org.ppwcode.vernacular.semantics.VII.util.CloneHelpers.safeReferen
 /**
  * <p>In many cases, a property exception is needed that reports the new value that was tried to set, and the
  *   old value of the property. These values can be used to generate sensible end-user messages of the form
- *   <q>Unable to change {propertyName} for {origin} from {propertyValue} to {vetoedValue}</q>.</p>
+ *   <em>Unable to change {propertyName} for {origin} from {propertyValue} to {vetoedValue}</em>.</p>
  * <p>This exception is a generalized version of a {@link PropertyException} that carries that information.
  *   It is a bore to create separate exceptions for each of those specific cases. It would be nice to use
  *   generics for the type of the property value, but generics are not possible for exceptions.</p>

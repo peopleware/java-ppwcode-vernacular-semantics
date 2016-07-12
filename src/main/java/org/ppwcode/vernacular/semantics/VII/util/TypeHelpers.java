@@ -62,7 +62,7 @@ import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.u
  *   <p>Member class declarations (paragraph 8.5) describe nested classes that are members
  *     of the surrounding class. Member classes may be static, in which case they
  *     have no access to the instance variables of the surrounding class; or they
- *     may be inner classes (paragraph 8.1.3).<p>
+ *     may be inner classes (paragraph 8.1.3).</p>
  *   <p>Member interface declarations (paragraph 8.5) describe nested interfaces that are
  *     members of the surrounding class.</p>
  *   <p>[...]</p>
@@ -123,6 +123,7 @@ import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.u
  *     <td align="center">-</td>
  *     <td align="center">-</td>
  *   </tr>
+ *   <caption>Terms concerning top level and nested types</caption>
  * </table>
  * <h4>In the context of this class</h4>
  * <p>In the context of the code in this class, <dfn>types in a code block</dfn> are considered irrelevant:
@@ -130,8 +131,8 @@ import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.u
  *   load the types in outside code in the type of programs this library addresses.</p>
  * <p>So, for all practical purposes, we can speak in this class about:</p>
  * <ul>
- *   <li><dfn>top level types</dfn></li>,
- *   <li><dfn>nested types</dfn in general
+ *   <li><dfn>top level types</dfn>,</li>
+ *   <li><dfn>nested types</dfn> in general
  *     <ul>
  *       <li><dfn>inner types</dfn>, <dfn>non-static nested types</dfn> or <dfn>dynamic nested types</dfn>
  *         (nested classes of which the instances have an outer instance)</li>
@@ -145,7 +146,7 @@ import static org.ppwcode.vernacular.exception.IV.util.ProgrammingErrorHelpers.u
  * </ul>
  * <p>Note that {@link Class} has methods to decided whether a type is a
  *   {@link Class#isMemberClass() <dfn>member class</dfn>}, a {@link Class#isLocalClass() <dfn>local class</dfn>}
- *   or an {@link Class#isAnonymousClass() <dfn>anonymous class</dfn>}, but not whether it is an <dfn>inner type<dfn>
+ *   or an {@link Class#isAnonymousClass() <dfn>anonymous class</dfn>}, but not whether it is an <dfn>inner type</dfn>
  *   or a <dfn>static nested type</dfn>, or a <dfn>top level type</dfn> or <dfn>nested type</dfn>. Methods to test
  *   that are provide here.</p>
  *

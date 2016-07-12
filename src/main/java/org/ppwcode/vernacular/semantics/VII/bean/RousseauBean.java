@@ -22,8 +22,8 @@ import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
  * <p>A type that formalizes how to work with JavaBeans that represent
  *   real-world objects during only a part of there life cycle.</p>
  * <a href="http://en.wikipedia.org/wiki/Jean-Jacques_Rousseau">
- * <img src="doc-files/180px-Jean-Jacques_Rousseau_(painted_portrait).jpg"
- *      align="right" /></a>
+ * <img src="doc-files/180px-Jean-Jacques_Rousseau_(painted_portrait).jpg" alt="Jean-Jacques Rousseau"
+ *      align="right"></a>
  * <p>Since JavaBeans are required to have a default constructor, often
  *   some properties cannot be given a semantically acceptable value
  *   at instantiation. This triggers a pattern where instances of the
