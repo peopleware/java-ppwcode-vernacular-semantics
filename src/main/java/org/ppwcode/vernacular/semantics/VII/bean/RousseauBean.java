@@ -18,8 +18,6 @@ package org.ppwcode.vernacular.semantics.VII.bean;
 
 import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
 
-
-
 /**
  * <p>A type that formalizes how to work with JavaBeans that represent
  *   real-world objects during only a part of there life cycle.</p>
@@ -57,16 +55,17 @@ import org.ppwcode.vernacular.semantics.VII.exception.CompoundPropertyException;
  *   ({@link #normalize()}). Normalization keeps doesn't change the nominal
  *   state of a {@code RousseauBean)}.</p>
  *
- * @note since VI, this is split into {@link SemanticBean} and this class.
- * @note In a previous version, we had a method {@code hasSameValues(RousseaBean rb)},
- *       meant to express the difference of having the samen values, {@link #equals(Object)}
- *       {@code ==}, and being a representative of the same real-world object.
- *       Yet, in practice it proved that this method was difficult to maintain in all
- *       subtypes, and was actually never used. It is removed in this version.
+ * <p>Note: since VI, this is split into {@link SemanticBean} and this class.</p>
+ * <p>Note: In a previous version, we had a method {@code hasSameValues(RousseauBean rb)},
+ *   meant to express the difference of having the same values, {@link #equals(Object)}
+ *   {@code ==}, and being a representative of the same real-world object.
+ *   Yet, in practice it proved that this method was difficult to maintain in all
+ *   subtypes, and was actually never used. It is removed in this version.</p>
  *
  * @author    Jan Dockx
  * @author    PeopleWare n.v.
  */
+@SuppressWarnings("WeakerAccess")
 public interface RousseauBean extends SemanticBean {
 
   /**
@@ -108,7 +107,7 @@ public interface RousseauBean extends SemanticBean {
   @MethodContract(
     post = @Expression(value = "'civilized",
                        description = "if this bean is not civilized before the call, " +
-                           "nothing can make this postcondition true, and thus an " +
+                           "nothing can make this post-condition true, and thus an " +
                            "exception must be thrown"),
     exc = @Throw(type = CompoundPropertyException.class,
                  cond = {
