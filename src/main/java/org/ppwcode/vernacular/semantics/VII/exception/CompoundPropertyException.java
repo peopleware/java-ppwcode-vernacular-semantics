@@ -17,8 +17,8 @@ limitations under the License.
 package org.ppwcode.vernacular.semantics.VII.exception;
 
 
-import org.ppwcode.vernacular.exception_III.ApplicationException;
-import org.ppwcode.vernacular.exception_III.CompoundException;
+import org.ppwcode.vernacular.exception.IV.ApplicationException;
+import org.ppwcode.vernacular.exception.IV.CompoundException;
 
 import java.util.*;
 
@@ -36,40 +36,17 @@ import java.util.*;
   @Expression("for (PropertyException pExc : allElementExceptions) {! pExc instanceof CompoundPropertyException)")
 })
 */
+@SuppressWarnings("WeakerAccess")
 public final class CompoundPropertyException extends PropertyException implements CompoundException<PropertyException> {
 
   /**
    * The empty String.
    */
+  @SuppressWarnings("unused")
   public final static String EMPTY = "";
 
   /*<construction;>*/
   //------------------------------------------------------------------
-
-//  /**
-//   * Only use this to gather exceptions over many objects.
-//   *
-//   * @param     message
-//   *            The message that describes the exceptional circumstance.
-//   * @param     cause
-//   *            The exception that occurred, causing this exception to be
-//   *            thrown, if that is the case.
-//   */
-//  @MethodContract(
-//    pre  = {
-//      @Expression("_message == null || ! _message.equals(EMPTY)")
-//    },
-//    post = {
-//      @Expression("origin == null"),
-//      @Expression("originType == null"),
-//      @Expression("propertyName == null"),
-//      @Expression("message == _message == null ? DEFAULT_MESSAGE_KEY : _message"),
-//      @Expression("cause == _cause")
-//    }
-//  )
-//  public CompoundPropertyException(final String message, final Throwable cause) {
-//    super(message, cause);
-//  }
 
   /**
    * @param     origin
@@ -102,47 +79,6 @@ public final class CompoundPropertyException extends PropertyException implement
   public CompoundPropertyException(final Object origin, final String propertyName, final String message, final Throwable cause) {
     super(origin, propertyName, message, cause);
   }
-
-//  /**
-//   * @param     origin
-//   *            The bean that has thrown this exception.
-//   * @param     inOriginInitialization
-//   *            Set to <code>true</code> if this active
-//   *            property is created during the origin initialization;
-//   *            if so, an exception will not carry a reference
-//   *            to the bean, but only to the bean type.
-//   * @param     propertyName
-//   *            The name of the property of which the setter has thrown
-//   *            this exception because parameter validation failed.
-//   * @param     message
-//   *            The message that describes the exceptional circumstance.
-//   * @param     cause
-//   *            The exception that occurred, causing this exception to be
-//   *            thrown, if that is the case.
-//   *
-//   * @since IV 1.0.1/1.0
-//   */
-//  @MethodContract(
-//    pre  = {
-//      @Expression("_origin != null"),
-//      @Expression("_propertyName != null ? hasProperty(_origin.class, _propertyName)"),
-//      @Expression("_message == null || ! _message.equals(EMPTY)")
-//    },
-//    post = {
-//      @Expression("inOriginInitialization ? origin == null : origin == _origin"),
-//      @Expression("originType == _origin.class"),
-//      @Expression("propertyName == _propertyName"),
-//      @Expression("message == _message == null ? DEFAULT_MESSAGE_KEY : _message"),
-//      @Expression("cause == _cause")
-//    }
-//  )
-//  public CompoundPropertyException(final Object origin,
-//                                   final boolean inOriginInitialization,
-//                                   final String propertyName,
-//                                   final String message,
-//                                   final Throwable cause) {
-//    super(origin, inOriginInitialization, propertyName, message, cause);
-//  }
 
   /**
    * @param     originType
@@ -267,7 +203,7 @@ public final class CompoundPropertyException extends PropertyException implement
   }
 
   private Map<String, Set<PropertyException>> deepImmutableElementExceptionsCopy() {
-    Map<String, Set<PropertyException>> result = new HashMap<String, Set<PropertyException>>($elementExceptionsMap);
+    Map<String, Set<PropertyException>> result = new HashMap<>($elementExceptionsMap);
     for (Map.Entry<String, Set<PropertyException>> e : result.entrySet()) {
       Set<PropertyException> pes = e.getValue();
       e.setValue(immutablePESetCopy(pes));
@@ -276,7 +212,7 @@ public final class CompoundPropertyException extends PropertyException implement
   }
 
   private Set<PropertyException> immutablePESetCopy(Set<PropertyException> pes) {
-    return pes == null ? null : Collections.unmodifiableSet(new HashSet<PropertyException>(pes));
+    return pes == null ? null : Collections.unmodifiableSet(new HashSet<>(pes));
   }
 
   /*
@@ -291,16 +227,14 @@ public final class CompoundPropertyException extends PropertyException implement
   @MethodContract(post = @Expression("union (Set s : elementExceptionsMap.values()"))
   */
   public Set<PropertyException> getElementExceptions() {
-    Set<PropertyException> result = new HashSet<PropertyException>();
-    for (Set<PropertyException> pes : $elementExceptionsMap.values()) {
-      result.addAll(pes);
-    }
+    Set<PropertyException> result = new HashSet<>();
+    $elementExceptionsMap.values().forEach(result::addAll);
     return result;
   }
 
   /**
    * Returns an element exception of this instance. Especially
-   * intresting if <code>size == 1</code>, of course.
+   * interesting if <code>size == 1</code>, of course.
    * Returns <code>null</code> if <code>size == 0</code>.
    */
   /*
@@ -311,10 +245,10 @@ public final class CompoundPropertyException extends PropertyException implement
       return null;
     }
     else {
-      Iterator<Set<PropertyException>> iter1 = $elementExceptionsMap.values().iterator();
-      Set<PropertyException> s = iter1.next();
-      Iterator<PropertyException> iter2 = s.iterator();
-      return iter2.next();
+      Iterator<Set<PropertyException>> iterator1 = $elementExceptionsMap.values().iterator();
+      Set<PropertyException> s = iterator1.next();
+      Iterator<PropertyException> iterator2 = s.iterator();
+      return iterator2.next();
     }
   }
 
@@ -415,7 +349,7 @@ public final class CompoundPropertyException extends PropertyException implement
     }
     Set<PropertyException> propertySet = $elementExceptionsMap.get(pExc.getPropertyName());
     if (propertySet == null) {
-      propertySet = new HashSet<PropertyException>();
+      propertySet = new HashSet<>();
       $elementExceptionsMap.put(pExc.getPropertyName(), propertySet);
     }
     propertySet.add(pExc);
@@ -435,7 +369,7 @@ public final class CompoundPropertyException extends PropertyException implement
     @Expression("propertyName != null ? for (String s) {s != propertyName ? ! $elementExceptionsMap.containsKey(s)}")
   })
   */
-  private Map<String, Set<PropertyException>> $elementExceptionsMap = new HashMap<String, Set<PropertyException>>();
+  private Map<String, Set<PropertyException>> $elementExceptionsMap = new HashMap<>();
 
   /*</property>*/
 
